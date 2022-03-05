@@ -1,0 +1,12 @@
+.content {
+  margin-top: 20px;
+}
+
+.messageHolder {
+  height: 3px;
+  border: black;
+}
+
+.submit-login {
+  height: 40px;
+}

@@ -1,0 +1,76 @@
+.ant-layout-header {
+  padding: 0px;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 1rem;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  border: 1px solid #ffffff;
+  text-align: left;
+  padding: 8px;
+  font-size: 25px;
+}
+
+th {
+  background-color: rgb(117, 201, 250);
+}
+
+td {
+  background-color: rgb(205, 235, 253);
+}
+
+form {
+  /* display: flex; */
+  gap: 2px;
+  padding: 1rem;
+}
+
+form td:last-child {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+form * {
+  font-size: 22px;
+}
+
+h2 {
+  padding-top: 1rem;
+  padding-left: 1rem;
+}
+
+.ant-table {
+  font-size: 20px;
+}
+
+.ant-table-thead > tr > th {
+  height: 5px;
+  padding: 5px;
+  font-size: inherit + 1px;
+}
+
+.ant-table-tbody > tr > td {
+  height: 5px;
+  padding: 5px;
+  font-size: inherit;
+}
+
+.items-from-modal-add {
+  margin-bottom: 5px;
+  border-bottom: black;
+}
+
+.ant-form-item-label {
+  padding-bottom: 0px !important;
+}
