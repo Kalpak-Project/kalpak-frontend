@@ -53,7 +53,8 @@ const ModalAdd = ({onUpdate, table, fields, button}) => {
 
     //doesn't work when all fields are filled and after that delete them (stay clickable)
     const checkFilledFields = () => {
-      data.map(({key, title, value}) => (value != null ? setOkBtnDisable(false) : setOkBtnDisable(true)))
+      // data.map(({key, title, value}) => (value != null ? setOkBtnDisable(false) : setOkBtnDisable(true)))
+      setOkBtnDisable(data.find(({value}) => !value) !== undefined)
     }
 
     const onChange = useCallback((changeKey, newValue) => {
