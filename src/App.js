@@ -22,17 +22,22 @@ const App = () => {
      <Layout>
     <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
       <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]}>
+      <Menu.Item key="0"> 
         <Link to='/'>
-          <Menu.Item key="0">
-            <img src="/kalpak.png" width={75} height={35}></img>
+          <img src="/kalpak.png" width={75} height={35}></img>
+        </Link>
+        </Menu.Item>
+        <Menu.Item key="1">
+        <Link to='/roles'>  
+          Roles
+          </Link>  
           </Menu.Item>
-        </Link>
-        <Link to='/roles'>
-        <Menu.Item key="1">Roles</Menu.Item>
-        </Link>
+        <Menu.Item key="2">
         <Link to='/persons'>
-        <Menu.Item key="2">Persons</Menu.Item>
+          Persons
         </Link>
+        </Menu.Item>
+
         <Menu.Item key="3">Settings</Menu.Item>
         <Menu.Item style={{backgroundColor: '#87CEFA', marginLeft: '65%'}} key="4">{user.user}</Menu.Item>
         
