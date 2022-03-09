@@ -54,7 +54,7 @@ const ModalAdd = ({onUpdate, table, fields, button}) => {
     useEffect(() => {
       setOkBtnDisable(data.find(({value}) => !value) !== undefined)
     }, [data])
-    
+
 
     const onChange = useCallback((changeKey, newValue) => {
         setData(data.map(({key, title, value}) =>({key: key, value: key === changeKey ? newValue : value, title: title})))
@@ -74,7 +74,7 @@ const ModalAdd = ({onUpdate, table, fields, button}) => {
           confirmLoading={confirmLoading}
           onCancel={handleCancel}
           width={600}
-          bodyStyle={{height:280}}
+          bodyStyle={{height:320}}
           okButtonProps={{disabled: okBtnDisable}}
         >
         <Form    

@@ -6,18 +6,16 @@ import { withUser } from '../components/userContext';
 import { Navigate  } from 'react-router-dom';
 
 
+const UsersTable = ({user}) => {
 
-const PersonsTable = ({user}) => {
+    const [{users: users, loading}, setUsers] = useState({users: [], loading: true});
 
-    const [{persons, loading}, setPersons] = useState({persons: [], loading: true});
-
-
-    const resetPersons = useCallback(
+    const resetUsers = useCallback(
         () => {
-            axios.get('/persons1').then(
+            axios.get('/users').then(
             res => {
                 console.log("update data")
-                setPersons({persons: res.data.users, loading: false})
+                setUsers({users: res.data.users, loading: false})
             }
         ).catch(err => {
             console.log(err)
@@ -25,26 +23,30 @@ const PersonsTable = ({user}) => {
     }, [],)
 
     useEffect(() => {
-        resetPersons()
-        
-    }, [])
+        resetUsers()
+    }, [users])
     
 
     const columns = [
         {
             title: 'Family Name',
             dataIndex: 'Family Name',
-            width: '33%',
+            width: '25%',
         },
         {
             title: 'Private Name',
             dataIndex: 'Private Name',
-            width: '33%',
+            width: '25%',
+        },
+        {
+            title: 'user_name',
+            dataIndex: 'user_name',
+            width: '25%',
         },
         {
             title: 'Personal ID',
             dataIndex: 'Personal ID',
-            width: '33%',
+            width: '25%',
         }
     ]
 
@@ -53,10 +55,10 @@ const PersonsTable = ({user}) => {
     return (
         user === null ? <Navigate to='/login' /> : 
         <div>
-            <ModalAdd onUpdate={resetPersons} table={"persons"} fields={cols} button='Add New Person' />
-            <Table loading={loading} dataSource={persons} columns={columns} pagination={{ pageSize: 40 }} scroll={{ y: 250 }} />
+            <ModalAdd onUpdate={resetUsers} table={"users"} fields={cols} button='Add New User' />
+            <Table loading={loading} dataSource={users} columns={columns} pagination={{ pageSize: 40 }} scroll={{ y: 250 }} />
         </div>
     )
 }
 
-export default withUser(PersonsTable)
+export default withUser(UsersTable)

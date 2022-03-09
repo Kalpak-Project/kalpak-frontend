@@ -28,8 +28,7 @@ const RolesTable = withUser(({user}) => {
 
     useEffect(() => {
        resetRoles()
-       
-    }, [])
+    }, [roles])
 
 
     const columns = [

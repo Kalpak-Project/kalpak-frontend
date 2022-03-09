@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { Layout, Menu, Form, Input, Button, Checkbox, message } from 'antd';
 import { withUser } from '../components/userContext';
 import axios from 'axios';
@@ -18,7 +18,7 @@ const LogInPage = withUser(({user, refreshUser}) => {
     // use callback, depends on isLogin
     const onFinish = (values) => {
       if (isLogin){
-      axios.post('/api/login', {username: values.username, password: values.password}).then(
+      axios.post('/api/login', {user_name: values.user_name, password: values.password}).then(
         res => {
           console.log(res.message)
           refreshUser()
@@ -26,8 +26,8 @@ const LogInPage = withUser(({user, refreshUser}) => {
         }
         ).catch(err => console.log(err.response.data))
       } else {
-        const newUser = {privatename: values.privatename, familyname: values.familyname,
-          username: values.username, password: values.password}
+        const newUser = {private_name: values.private_name, family_name: values.family_name,
+          personal_id: values.personal_id, user_name: values.user_name, password: values.password}
         axios.post('/api/register', newUser).then(
           res => {
             console.log(res.message)
@@ -76,7 +76,7 @@ const LogInPage = withUser(({user, refreshUser}) => {
 
       {!isLogin && <Form.Item
         label="Private Name"
-        name="privatename"
+        name="private_name"
         rules={[
           {
             required: true,
@@ -89,7 +89,7 @@ const LogInPage = withUser(({user, refreshUser}) => {
 
       {!isLogin && <Form.Item
         label="Family Name"
-        name="familyname"
+        name="family_name"
         rules={[
           {
             required: true,
@@ -99,11 +99,24 @@ const LogInPage = withUser(({user, refreshUser}) => {
       >
         <Input placeholder='Family Name' />
       </Form.Item>}
+
+      {!isLogin && <Form.Item
+        label="Personal ID"
+        name="personal_id"
+        rules={[
+          {
+            required: true,
+            message: 'Please enter your personal ID!',
+          },
+        ]}
+      >
+        <Input placeholder='Personal ID' />
+      </Form.Item>}
       
 
          <Form.Item
-        label="Username"
-        name="username"
+        label="UserName"
+        name="user_name"
         rules={[
           {
             required: true,
