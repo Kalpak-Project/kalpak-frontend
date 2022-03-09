@@ -5,7 +5,6 @@ import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, Navigate } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import '../cssFiles/LogInPage.css'
-import RegisterPage from './RegisterPage';
 
 const LogInPage = withUser(({user, refreshUser}) => { 
 

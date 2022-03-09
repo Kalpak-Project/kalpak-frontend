@@ -2,15 +2,14 @@ import React, { useContext, useState } from 'react';
 import 'antd/dist/antd.css';
 import './App.css';
 import RolesTable from './pages/RolesTable';
-import PersonsTable from './pages/UsersTable';
+import UsersTable from './pages/UsersTable';
 import LogInPage from './pages/LogInPage';
-import RegisterPage from './pages/RegisterPage';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate  } from 'react-router-dom';
 import { UserContext } from './components/userContext';
 import MenuItem from 'antd/lib/menu/MenuItem';
 import axios from 'axios';
-import UsersTable from './pages/UsersTable';
+
 
 const { Header, Content, Footer } = Layout;
 

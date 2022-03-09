@@ -24,7 +24,7 @@ const UsersTable = ({user}) => {
 
     useEffect(() => {
         resetUsers()
-    }, [users])
+    }, [])
     
 
     const columns = [
