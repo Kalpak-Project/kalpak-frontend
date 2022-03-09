@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Modal, Button, Form, Input } from 'antd';
 import axios from 'axios';
 
@@ -51,15 +51,13 @@ const ModalAdd = ({onUpdate, table, fields, button}) => {
     };
 
 
-    //doesn't work when all fields are filled and after that delete them (stay clickable)
-    const checkFilledFields = () => {
-      // data.map(({key, title, value}) => (value != null ? setOkBtnDisable(false) : setOkBtnDisable(true)))
+    useEffect(() => {
       setOkBtnDisable(data.find(({value}) => !value) !== undefined)
-    }
+    }, [data])
+    
 
     const onChange = useCallback((changeKey, newValue) => {
         setData(data.map(({key, title, value}) =>({key: key, value: key === changeKey ? newValue : value, title: title})))
-        checkFilledFields()
       }, [data])
 
   

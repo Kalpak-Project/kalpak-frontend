@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Layout, Menu, Form, Input, Button, Checkbox, message } from 'antd';
 import { withUser } from '../components/userContext';
 import axios from 'axios';
@@ -9,11 +9,15 @@ import RegisterPage from './RegisterPage';
 
 const LogInPage = withUser(({user, refreshUser}) => { 
 
+  const [isLogin, setIsLogin] = useState(true)
+
   const {Header} = Layout
 
     const navigate = useNavigate()
 
+    // use callback, depends on isLogin
     const onFinish = (values) => {
+      if (isLogin){
       axios.post('/api/login', {username: values.username, password: values.password}).then(
         res => {
           console.log(res.message)
@@ -21,7 +25,17 @@ const LogInPage = withUser(({user, refreshUser}) => {
           navigate('/')
         }
         ).catch(err => console.log(err.response.data))
-      };
+      } else {
+        const newUser = {privatename: values.privatename, familyname: values.familyname,
+          username: values.username, password: values.password}
+        axios.post('/api/register', newUser).then(
+          res => {
+            console.log(res.message)
+            refreshUser()
+            // need to login the user automaticlly and navigate to '/'
+          }
+        ).catch(err => console.log(err.response.data))
+      }};
 
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
@@ -33,7 +47,10 @@ const LogInPage = withUser(({user, refreshUser}) => {
        <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
       
       <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]}>
-        <Menu.Item key="1">Register</Menu.Item>
+
+        {isLogin ? <Menu.Item onClick={() => setIsLogin(false)} key="1">Register</Menu.Item> :
+        <Menu.Item onClick={() => setIsLogin(true)} key="1">Log in</Menu.Item> }
+      
         
       </Menu>
     </Header>
@@ -56,6 +73,34 @@ const LogInPage = withUser(({user, refreshUser}) => {
       onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
+
+      {!isLogin && <Form.Item
+        label="Private Name"
+        name="privatename"
+        rules={[
+          {
+            required: true,
+            message: 'Please enter your privte name!',
+          },
+        ]}
+      >
+        <Input placeholder='Private Name' />
+      </Form.Item>}
+
+      {!isLogin && <Form.Item
+        label="Family Name"
+        name="familyname"
+        rules={[
+          {
+            required: true,
+            message: 'Please enter your family name!',
+          },
+        ]}
+      >
+        <Input placeholder='Family Name' />
+      </Form.Item>}
+      
+
          <Form.Item
         label="Username"
         name="username"
@@ -71,6 +116,7 @@ const LogInPage = withUser(({user, refreshUser}) => {
        <Form.Item
         label="Password"
         name="password"
+        hasFeedback
         rules={[
           {
             required: true,
@@ -80,7 +126,33 @@ const LogInPage = withUser(({user, refreshUser}) => {
       >
         <Input.Password placeholder='Password' />
       </Form.Item>
-      <Form.Item
+      
+      {!isLogin && <Form.Item
+        label="Confirm Password"
+        name="confirmpassword"
+        dependencies={['password']}
+        hasFeedback
+        rules={[
+          {
+            required: true,
+            message: 'Please confirm your password!',
+          },
+          ({ getFieldValue }) => ({
+            validator(_, value) {
+              if (!value || getFieldValue('password') === value) {
+                return Promise.resolve();
+              }
+
+              return Promise.reject(new Error('The two passwords that you entered do not match!'));
+            },
+          }),
+        ]}
+      >
+        <Input.Password placeholder='Confirm Password' />
+      </Form.Item>}
+
+
+        {isLogin && <Form.Item
         name="remember"
         valuePropName="checked"
         wrapperCol={{
@@ -89,7 +161,8 @@ const LogInPage = withUser(({user, refreshUser}) => {
         }}
       >
         <Checkbox>Remember me</Checkbox>
-      </Form.Item>
+      </Form.Item>}
+
     
       <Form.Item
         wrapperCol={{
