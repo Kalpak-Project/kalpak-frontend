@@ -13,7 +13,7 @@ const RolesTable = withUser(({user}) => {
 
     const resetRoles = useCallback(
         () => {
-            axios.get('/roles').then(
+            axios.get('/api/roles').then(
                 res => {
                     console.log("update data")
                     setRoles({roles: res.data.roles, loading: false})
@@ -56,7 +56,7 @@ const RolesTable = withUser(({user}) => {
     return (
         user === null ? <Navigate to='/login' /> : 
         <div>
-            <ModalAdd onUpdate={resetRoles} table={"roles"} fields={coolmnsTitles} button='Add New Role' />
+            <ModalAdd onChange={resetRoles} table={"roles"} fields={coolmnsTitles} button='Add New Role' />
             <Table loading={loading} dataSource={roles} columns={columns} pagination={{ pageSize: 40 }} scroll={{ y: 250 }} />
         </div>
     )

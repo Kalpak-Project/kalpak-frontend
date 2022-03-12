@@ -6,7 +6,7 @@ import UsersTable from './pages/UsersTable';
 import LogInPage from './pages/LogInPage';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate  } from 'react-router-dom';
-import { UserContext } from './components/userContext';
+import { UserContext, userData } from './components/userContext';
 import MenuItem from 'antd/lib/menu/MenuItem';
 import axios from 'axios';
 
@@ -17,20 +17,16 @@ const App = () => {
 
   const { SubMenu } = Menu;
 
-  const logoutUser = () => {
-    axios.get('/api/logout').then(
-      res => {
-        console.log(res)
-      }
-    )
-  }
+  
 
   return (
     <Router>
     <UserContext>
-    {({user}) => user == null ? <LogInPage /> : 
+    {({user}) => !user ? <LogInPage /> : 
      <Layout>
     <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
+      <userData.Consumer>
+        {({logoutUser}) => 
       <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]}>
       <Menu.Item key="0"> 
         <Link to='/'>
@@ -62,13 +58,10 @@ const App = () => {
         </SubMenu>
         
       </Menu>
+      }
+      </userData.Consumer>
     </Header>
     <Content className="site-layout" style={{ padding: '0 50px' , marginTop: '5rem' }}>
-      {/* <Breadcrumb style={{ margin: '16px 0' }}>
-        <Breadcrumb.Item>Home</Breadcrumb.Item>
-        <Breadcrumb.Item>List</Breadcrumb.Item>
-        <Breadcrumb.Item>App</Breadcrumb.Item>
-      </Breadcrumb> */}
       
       <div className="site-layout-background" style={{ padding: 24, minHeight: 430 }}>
       

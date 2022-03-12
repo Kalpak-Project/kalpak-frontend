@@ -15,7 +15,7 @@ const LogInPage = withUser(({user, refreshUser}) => {
     const navigate = useNavigate()
 
     // use callback, depends on isLogin
-    const onFinish = (values) => {
+    const onFinish = useCallback((values) => {
       if (isLogin){
       axios.post('/api/login', {user_name: values.user_name, password: values.password}).then(
         res => {
@@ -25,20 +25,18 @@ const LogInPage = withUser(({user, refreshUser}) => {
         }
         ).catch(err => console.log(err.response.data))
       } else {
-        const newUser = {private_name: values.private_name, family_name: values.family_name,
-          personal_id: values.personal_id, user_name: values.user_name, password: values.password}
+        const newUser = {"Private Name": values.private_name, "Family Name": values.family_name,
+          "Personal ID": values.personal_id, user_name: values.user_name, password: values.password}
         axios.post('/api/register', newUser).then(
           res => {
-            console.log(res.message)
             refreshUser()
-            // need to login the user automaticlly and navigate to '/'
+            navigate('/')
           }
         ).catch(err => console.log(err.response.data))
-      }};
+      }}, [isLogin])
 
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
-        
       };
 
     return (
@@ -102,11 +100,13 @@ const LogInPage = withUser(({user, refreshUser}) => {
       {!isLogin && <Form.Item
         label="Personal ID"
         name="personal_id"
+        hasFeedback
         rules={[
           {
             required: true,
             message: 'Please enter your personal ID!',
           },
+          { min: 7, max: 7, message: 'Personal ID must be exactly 7 digits.' },
         ]}
       >
         <Input placeholder='Personal ID' />
@@ -134,6 +134,7 @@ const LogInPage = withUser(({user, refreshUser}) => {
             required: true,
             message: 'Please enter your password!',
           },
+          { min: 5, message: 'Password must be minimum 5 characters.' },
         ]}
       >
         <Input.Password placeholder='Password' />

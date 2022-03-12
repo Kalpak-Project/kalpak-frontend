@@ -12,7 +12,7 @@ const UsersTable = ({user}) => {
 
     const resetUsers = useCallback(
         () => {
-            axios.get('/users').then(
+            axios.get('/api/users').then(
             res => {
                 console.log("update data")
                 setUsers({users: res.data.users, loading: false})
@@ -21,6 +21,7 @@ const UsersTable = ({user}) => {
             console.log(err)
         })
     }, [],)
+
 
     useEffect(() => {
         resetUsers()
@@ -55,7 +56,7 @@ const UsersTable = ({user}) => {
     return (
         user === null ? <Navigate to='/login' /> : 
         <div>
-            <ModalAdd onUpdate={resetUsers} table={"users"} fields={cols} button='Add New User' />
+            <ModalAdd onChange={resetUsers} table={"users"} fields={cols} button='Add New User' />
             <Table loading={loading} dataSource={users} columns={columns} pagination={{ pageSize: 40 }} scroll={{ y: 250 }} />
         </div>
     )

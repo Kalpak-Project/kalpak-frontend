@@ -3,7 +3,7 @@ import { Modal, Button, Form, Input } from 'antd';
 import axios from 'axios';
 
 
-const ModalAdd = ({onUpdate, table, fields, button}) => {
+const ModalAdd = ({onChange, table, fields, button}) => {
 
     const formItemLayout =
         {
@@ -27,7 +27,6 @@ const ModalAdd = ({onUpdate, table, fields, button}) => {
   
     const handleOk = () => {
         addToDB()
-        onUpdate()
         setData(fields.map(title => ({key: title, title: title, value: null})))
         setConfirmLoading(true);
         setTimeout(() => {
@@ -36,13 +35,15 @@ const ModalAdd = ({onUpdate, table, fields, button}) => {
       }, 500);
     };
 
-    const addToDB = () => {
+    const addToDB = useCallback(() => {
         const newElement = data.map(({key, title, value}) => ({key: key, value: value}))
+        console.log("new element: ")
         console.log(newElement)
-        axios.post('/'+table, newElement).then(res => {
+        axios.post('/api/'+table, newElement).then(res => {
+            onChange()
             console.log(res)
         }).catch(err => {console.log(err)})
-    }
+    }, [onChange, data])
   
     const handleCancel = () => {
       console.log('Clicked cancel button');
@@ -56,8 +57,9 @@ const ModalAdd = ({onUpdate, table, fields, button}) => {
     }, [data])
 
 
-    const onChange = useCallback((changeKey, newValue) => {
+    const onValueChange = useCallback((changeKey, newValue) => {
         setData(data.map(({key, title, value}) =>({key: key, value: key === changeKey ? newValue : value, title: title})))
+        
       }, [data])
 
   
@@ -91,7 +93,7 @@ const ModalAdd = ({onUpdate, table, fields, button}) => {
                     },
                   ]}
                   key={key} className='items-from-modal-add'>
-                <Input style={{width: 300}} value={value} onChange={(event) => onChange(key, event.target.value)} placeholder={"Enter the "+title} />
+                <Input style={{width: 300}} value={value} onChange={(event) => onValueChange(key, event.target.value)} placeholder={"Enter the "+title} />
                 </Form.Item>
         )}      
       </Form>
