@@ -44,20 +44,20 @@ const App = () => {
           Users
         </Link>
         </Menu.Item>
-        <Menu.Item key="4">
+        <Menu.Item key="3">
           <Link to='/manning'>
           Manning
             </Link>
           </Menu.Item>
 
         <SubMenu
-          key="3"
+          key="4"
           title={
             <span className="submenu-title-wrapper">
               {user.user}
             </span>
           }
-          style={{backgroundColor: '#87CEFA', marginLeft: '72%'}}
+          style={{backgroundColor: '#87CEFA', marginLeft: '64%'}}
         >
             <Menu.Item key="settings">Settings</Menu.Item>
             <Menu.Item onClick={() => logoutUser()} key="logout">Log out</Menu.Item>
