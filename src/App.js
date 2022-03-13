@@ -4,6 +4,7 @@ import './App.css';
 import RolesTable from './pages/RolesTable';
 import UsersTable from './pages/UsersTable';
 import LogInPage from './pages/LogInPage';
+import ManningTable from './pages/ManningTable'
 import { Layout, Menu, Breadcrumb } from 'antd';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate  } from 'react-router-dom';
 import { UserContext, userData } from './components/userContext';
@@ -43,6 +44,11 @@ const App = () => {
           Users
         </Link>
         </Menu.Item>
+        <Menu.Item key="4">
+          <Link to='/manning'>
+          Manning
+            </Link>
+          </Menu.Item>
 
         <SubMenu
           key="3"
@@ -69,6 +75,7 @@ const App = () => {
         <Route path='/' element={<div>Home</div>} />
         <Route path='/roles' element={<RolesTable />} />
         <Route path='/users' element={<UsersTable />} />
+        <Route path='/manning' element={<ManningTable />} /> 
        </Routes>
              
       </div>
