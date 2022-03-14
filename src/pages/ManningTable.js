@@ -31,21 +31,28 @@ const ManningTable = withUser(({user}) => {
 
 
     const columns = [
-        {
-            title: 'Roles ID',
-            dataIndex: 'Roles ID',
-            width: '33%',
-        },
+       
         {
             title: 'User ID',
             dataIndex: 'User ID',
-            width: '33%',
+            width: '25%',
+        },
+        {
+            title: 'Role ID',
+            dataIndex: 'Role ID',
+            width: '25%',
         },
         {
             title: 'Date of staffing',
             dataIndex: 'Date of staffing',
-            width: '33%',
+            width: '25%',
+        },
+        {
+            title: 'Job end date',
+            dataIndex: 'Job end date',
+            width: '25%',
         }
+
     ]
 
     const coolmnsTitles = columns.map(elem => elem.title)
