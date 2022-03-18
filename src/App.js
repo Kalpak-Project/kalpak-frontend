@@ -4,11 +4,13 @@ import './App.css';
 import RolesTable from './pages/RolesTable';
 import UsersTable from './pages/UsersTable';
 import LogInPage from './pages/LogInPage';
+import ManningTable from './pages/ManningTable';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate  } from 'react-router-dom';
 import { UserContext, userData } from './components/userContext';
 import MenuItem from 'antd/lib/menu/MenuItem';
 import axios from 'axios';
+import Home from './pages/Home';
 
 
 const { Header, Content, Footer } = Layout;
@@ -43,15 +45,20 @@ const App = () => {
           Users
         </Link>
         </Menu.Item>
+        <Menu.Item key="3">
+          <Link to='/manning'>
+          Manning
+            </Link>
+          </Menu.Item>
 
         <SubMenu
-          key="3"
+          key="4"
           title={
             <span className="submenu-title-wrapper">
               {user.user}
             </span>
           }
-          style={{backgroundColor: '#87CEFA', marginLeft: '72%'}}
+          style={{backgroundColor: '#87CEFA', marginLeft: '64%'}}
         >
             <Menu.Item key="settings">Settings</Menu.Item>
             <Menu.Item onClick={() => logoutUser()} key="logout">Log out</Menu.Item>
@@ -66,9 +73,10 @@ const App = () => {
       <div className="site-layout-background" style={{ padding: 24, minHeight: 430 }}>
       
        <Routes> 
-        <Route path='/' element={<div>Home</div>} />
+        <Route path='/' element={<Home />} />
         <Route path='/roles' element={<RolesTable />} />
         <Route path='/users' element={<UsersTable />} />
+        <Route path='/manning' element={<ManningTable />} /> 
        </Routes>
              
       </div>
