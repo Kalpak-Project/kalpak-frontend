@@ -61,7 +61,8 @@ const ManningTable = withUser(({user}) => {
 
 
     return (
-        user === null ? <Navigate to='/login' /> : 
+        user === null ? <Navigate to='/login' /> :
+        !user['isAdmin'] ? <Navigate to='/' /> : 
         <div>
             <ModalAdd onChange={resetManning} table={"manning"} fields={coolmnsTitles} button='Add New Manning' />
             <Table loading={loading} dataSource={manning} columns={columns} pagination={{ pageSize: 40 }} scroll={{ y: 250 }} />

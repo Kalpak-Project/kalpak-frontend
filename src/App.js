@@ -35,8 +35,10 @@ const App = () => {
           <img src="/kalpak.png" width={75} height={35}></img>
         </Link>
         </Menu.Item>
-        <Menu.Item key="1">
-        <Link to='/roles'>  
+
+        {user['isAdmin'] &&
+        <><Menu.Item key="1">
+        <Link to={user['isAdmin'] ? '/roles' : '/'}>  
           Roles
           </Link>  
           </Menu.Item>
@@ -49,8 +51,9 @@ const App = () => {
           <Link to='/manning'>
           Manning
             </Link>
-          </Menu.Item>
-
+          </Menu.Item></>}
+        
+        {user['isAdmin'] ?
         <SubMenu
           key="4"
           title={
@@ -62,7 +65,21 @@ const App = () => {
         >
             <Menu.Item key="settings">Settings</Menu.Item>
             <Menu.Item onClick={() => logoutUser()} key="logout">Log out</Menu.Item>
-        </SubMenu>
+        </SubMenu> : 
+        <SubMenu
+        key="4"
+        title={
+          <span className="submenu-title-wrapper">
+            {user.user}
+          </span>
+        }
+        style={{backgroundColor: '#87CEFA', marginLeft: '83%'}}
+      >
+          <Menu.Item key="settings">Settings</Menu.Item>
+          <Menu.Item onClick={() => logoutUser()} key="logout">Log out</Menu.Item>
+      </SubMenu>
+        }
+        
         
       </Menu>
       }
