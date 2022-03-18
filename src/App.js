@@ -42,7 +42,7 @@ const App = () => {
         <Link to='/users'>
           Users
         </Link>
-        </Menu.Item>
+        </Menu.Item>        
 
         <SubMenu
           key="3"
@@ -51,7 +51,7 @@ const App = () => {
               {user.user}
             </span>
           }
-          style={{backgroundColor: '#87CEFA', marginLeft: '72%'}}
+          style={{backgroundColor: '#87CEFA', marginLeft: '73%'}}
         >
             <Menu.Item key="settings">Settings</Menu.Item>
             <Menu.Item onClick={() => logoutUser()} key="logout">Log out</Menu.Item>
