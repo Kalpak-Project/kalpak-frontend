@@ -32,13 +32,13 @@ const App = () => {
       <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]}>
       <Menu.Item key="0"> 
         <Link to='/'>
-          <img src="/kalpak.png" width={75} height={35}></img>
+          <img src="/KALPAK-white.png" width={75} height={35}></img>
         </Link>
         </Menu.Item>
 
         {user['isAdmin'] &&
         <><Menu.Item key="1">
-        <Link to={user['isAdmin'] ? '/roles' : '/'}>  
+        <Link to='/roles'>  
           Roles
           </Link>  
           </Menu.Item>
