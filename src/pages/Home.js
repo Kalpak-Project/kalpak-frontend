@@ -7,17 +7,18 @@ import { Navigate } from 'react-router-dom';
 import { SmileTwoTone } from '@ant-design/icons';
 
 
-
-
 const Home = withUser(({user}) => {
 
-    
+    const [smaile , setSmaile] = useState(true);
+
 
 
     return (
         user === null ? <Navigate to='/login' /> : 
         <div>
-            <SmileTwoTone style={{ fontSize: '200px', color: '#08c' }} />  
+            {smaile ? <SmileTwoTone style={{fontSize: '200px', color: '#08c'}} /> : 
+            <SmileTwoTone style={{fontSize: '100px', color: '#08c'}} />} 
+            <button onClick={()=>{setSmaile(!smaile)}}> </button> 
         </div>
     )
 })
