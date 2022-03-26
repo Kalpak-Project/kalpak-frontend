@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import {Table} from 'antd';
+import {Table, Select , Spin} from 'antd';
 import ModalAdd from '../components/ModalAdd';
 import { withUser } from '../components/userContext';
 import { Navigate  } from 'react-router-dom';
-
+const {Option}=Select;
 
 const UsersTable = ({user}) => {
 
@@ -62,4 +62,27 @@ const UsersTable = ({user}) => {
     )
 }
 
+export const User = ({value})=> {
+    const [data,setData]=useState();
+    useEffect(()=>{
+        axios.get(`/api/users/${value}`).then((response)=>{
+        setData(response.data["user_name"])            
+        }).catch();
+    },[]);
+    return data? <div>{data}</div>: <Spin/>
+}
+
+
+export const UserSelect = ({value,onChange})=> {
+    const [data,setData]=useState([]);
+    useEffect(()=>{
+        axios.get("/api/users").then((response)=>{
+        setData(response.data.users)            
+        }).catch();
+    },[]);
+    return <Select value={value} onChange={onChange}> 
+        {data.map((option,i)=><Option key={i} value={option.key}><User value={option.key}/></Option>)}
+    </Select>
+}
 export default withUser(UsersTable)
+

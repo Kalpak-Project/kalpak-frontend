@@ -5,6 +5,7 @@ import ModalAdd from '../components/ModalAdd';
 import { withUser } from '../components/userContext';
 import { Navigate } from 'react-router-dom';
 import { Role, RoleSelect } from './RolesTable';
+import { User, UserSelect} from './UsersTable';
 import Moment from 'react-moment';
 
 
@@ -38,14 +39,16 @@ const ManningTable = withUser(({user}) => {
             title: 'User ID',
             dataIndex: 'User ID',
             width: '25%',
-            render: (text, record) => <Role value={text}/>,
-            inputRender: (value, onChange)=><RoleSelect value={value} onChange={onChange}/>,
+            render: (text, record) => <User value={text}/>,
+            inputRender: (value, onChange)=><UserSelect value={value} onChange={onChange}/>,
         },
         {
             title: 'Role ID',
             dataIndex: 'Role ID',
             width: '25%',
-            render: value => <Role value={value}/>
+            render: (text, record) => <Role value={text}/>,
+            inputRender: (value, onChange)=><RoleSelect value={value} onChange={onChange}/>,
+
         },
         {
             title: 'Date of staffing',
