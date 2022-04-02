@@ -40,14 +40,14 @@ const ManningTable = withUser(({user}) => {
             dataIndex: 'User ID',
             width: '25%',
             render: (text, record) => <User value={text}/>,
-            inputRender: (value, onChange)=><UserSelect value={value} onChange={onChange}/>,
+            inputRender: (value, onChange)=><UserSelect key={1} value={value} onChange={onChange}/>,
         },
         {
             title: 'Role ID',
             dataIndex: 'Role ID',
             width: '25%',
             render: (text, record) => <Role value={text}/>,
-            inputRender: (value, onChange)=><RoleSelect value={value} onChange={onChange}/>,
+            inputRender: (value, onChange)=><RoleSelect key={1} value={value} onChange={onChange}/>,
 
         },
         {
@@ -55,14 +55,14 @@ const ManningTable = withUser(({user}) => {
             dataIndex: 'Date of staffing',
             width: '25%',
             render: value => <Moment date={value}/>,
-            inputRender: (value, onChange)=><DatePicker date={value} onChange={(newValue)=>onChange(newValue.toISOString())}/>,
+            inputRender: (value, onChange)=><DatePicker key={1} date={value} onChange={(newValue)=>onChange(newValue.toISOString())}/>,
         },
         {
             title: 'Job end date',
             dataIndex: 'Job end date',
             width: '25%',
             render: value => <Moment date={value}/>,
-            inputRender: (value, onChange)=><DatePicker date={value} onChange={(newValue)=>onChange(newValue.toISOString())}/>,
+            inputRender: (value, onChange)=><DatePicker key={1} date={value} onChange={(newValue)=>onChange(newValue.toISOString())}/>,
         }
 
     ]
