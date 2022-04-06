@@ -17,7 +17,7 @@ const ModalAdd = ({onChange, table, fields, button}) => {
         }
         
     const [visible, setVisible] = useState(false);
-    const [data, setData] = useState(fields.map(title => ({key: title, title: title, value: null})));
+    const [data, setData] = useState(fields.map(()=>null));
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [okBtnDisable, setOkBtnDisable] = useState(true);
   
@@ -27,7 +27,7 @@ const ModalAdd = ({onChange, table, fields, button}) => {
   
     const handleOk = () => {
         addToDB()
-        setData(fields.map(title => ({key: title, title: title, value: null})))
+        setData(fields.map(()=>null));
         setConfirmLoading(true);
         setTimeout(() => {
         setVisible(false);
@@ -36,31 +36,31 @@ const ModalAdd = ({onChange, table, fields, button}) => {
     };
 
     const addToDB = useCallback(() => {
-        const newElement = data.map(({key, title, value}) => ({key: key, value: value}))
+        const newElement = fields.map(({title},i) => ({key: title, value: data[i]}))
         console.log("new element: ")
         console.log(newElement)
         axios.post('/api/'+table, newElement).then(res => {
             onChange()
             console.log(res)
         }).catch(err => {console.log(err)})
-    }, [onChange, data])
+    }, [onChange, data,fields])
   
     const handleCancel = () => {
       console.log('Clicked cancel button');
-      setData(fields.map(title => ({key: title, title: title, value: null})))
+      setData(fields.map(()=>null));
       setVisible(false);
     };
 
 
     useEffect(() => {
-      setOkBtnDisable(data.find(({value}) => !value) !== undefined)
+      setOkBtnDisable(data.find(value => !value) !== undefined)
     }, [data])
 
 
     const onValueChange = useCallback((changeKey, newValue) => {
-        setData(data.map(({key, title, value}) =>({key: key, value: key === changeKey ? newValue : value, title: title})))
+        setData((prevData)=>fields.map(({title},i) => title===changeKey? newValue:prevData[i]))
         
-      }, [data])
+      }, [fields])
 
   
     return (
@@ -84,7 +84,7 @@ const ModalAdd = ({onChange, table, fields, button}) => {
         layout='vertical'
         > 
         
-        {data.map(({title, key, value}) =>
+        {fields.map(({title,inputRender},i) =>
                 <Form.Item label={title} name={title}
                   rules={[
                     {
@@ -92,8 +92,11 @@ const ModalAdd = ({onChange, table, fields, button}) => {
                       message: 'Please enter the '+title,
                     },
                   ]}
-                  key={key} className='items-from-modal-add'>
-                <Input style={{width: 300}} value={value} onChange={(event) => onValueChange(key, event.target.value)} placeholder={"Enter the "+title} />
+                  key={title} className='items-from-modal-add'>
+               {inputRender?
+               inputRender(data[i],(newValue)=>onValueChange(title,newValue)):
+                <Input style={{width: 300}} value={data[i]} onChange={(event) => onValueChange(title, event.target.value)} placeholder={"Enter the "+title} />
+               }
                 </Form.Item>
         )}      
       </Form>

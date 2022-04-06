@@ -4,21 +4,39 @@ import { Table } from 'antd';
 import ModalAdd from '../components/ModalAdd';
 import { withUser } from '../components/userContext';
 import { Navigate } from 'react-router-dom';
-import { SmileTwoTone } from '@ant-design/icons';
+import { SmileTwoTone, FrownTwoTone } from '@ant-design/icons';
 
 
 const Home = withUser(({user}) => {
 
-    const [smaile , setSmaile] = useState(true);
+    const [smile , setSmile] = useState(true);
 
+    const resetSmile = useCallback(
+        () => {
+            axios.get(`/api/users/${user.id}/smile`).then(
+                res => {
+                    console.log("update data")
+                    setSmile(res.data.smile)
+                }
+            ).catch(err => {
+                console.log(err)
+            })
+        },
+        [],
+    )
+
+
+    useEffect(() => {
+       resetSmile()
+    }, [])
 
 
     return (
         user === null ? <Navigate to='/login' /> : 
         <div>
-            {smaile ? <SmileTwoTone style={{fontSize: '200px', color: '#08c'}} /> : 
-            <SmileTwoTone style={{fontSize: '100px', color: '#08c'}} />} 
-            <button onClick={()=>{setSmaile(!smaile)}}> </button> 
+            {smile ? 
+            <SmileTwoTone style={{fontSize: '200px', color: '#08c'}} /> : 
+            <FrownTwoTone style={{fontSize: '200px', color: '#08c'}} />} 
         </div>
     )
 })

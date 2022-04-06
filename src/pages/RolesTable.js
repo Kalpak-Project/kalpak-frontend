@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import axios from 'axios';
-import { Table } from 'antd';
+import { Table, Select, Spin } from 'antd';
 import ModalAdd from '../components/ModalAdd';
 import { withUser } from '../components/userContext';
 import { Navigate } from 'react-router-dom';
-
+const {Option}=Select;
 
 const RolesTable = withUser(({user}) => {
 
@@ -62,5 +62,27 @@ const RolesTable = withUser(({user}) => {
         </div>
     )
 })
+export const Role = ({value})=> {
+    const [data,setData]=useState();
+    useEffect(()=>{
+        axios.get(`/api/roles/${value}`).then((response)=>{
+        setData(response.data["Title"])            
+        }).catch();
+    },[]);
+    return data? <div>{data}</div>: <Spin/>
+}
+
+
+export const RoleSelect = ({value,onChange})=> {
+    const [data,setData]=useState([]);
+    useEffect(()=>{
+        axios.get("/api/roles").then((response)=>{
+        setData(response.data.roles)            
+        }).catch();
+    },[]);
+    return <Select value={value} onChange={onChange}> 
+        {data.map((option,i)=><Option key={i} value={option.key}><Role value={option.key}/></Option>)}
+    </Select>
+}
 
 export default RolesTable
