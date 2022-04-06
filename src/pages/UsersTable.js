@@ -54,7 +54,8 @@ const UsersTable = ({user}) => {
     const cols = columns.map(elem => elem.title)
 
     return (
-        user === null ? <Navigate to='/login' /> : 
+        user === null ? <Navigate to='/login' /> :
+        !user['isAdmin'] ? <Navigate to='/' /> : 
         <div>
             <ModalAdd onChange={resetUsers} table={"users"} fields={cols} button='Add New User' />
             <Table loading={loading} dataSource={users} columns={columns} pagination={{ pageSize: 40 }} scroll={{ y: 250 }} />
