@@ -13,7 +13,7 @@ const Home = withUser(({user}) => {
 
     const resetSmile = useCallback(
         () => {
-            axios.get("/api/users/<key>/smile").then(
+            axios.get(`/api/users/${user.id}/smile`).then(
                 res => {
                     console.log("update data")
                     setSmile(res.data.smile)
