@@ -93,6 +93,7 @@ const ModalAdd = ({onChange, table, fields, button}) => {
                     },
                   ]}
                   key={title} className='items-from-modal-add'>
+                    {console.log(title)}
                {inputRender?
                inputRender(data[i],(newValue)=>onValueChange(title,newValue)):
                 <Input style={{width: 300}} value={data[i]} onChange={(event) => onValueChange(title, event.target.value)} placeholder={"Enter the "+title} />
