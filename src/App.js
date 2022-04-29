@@ -6,6 +6,7 @@ import UsersTable from './pages/UsersTable';
 import LogInPage from './pages/LogInPage';
 import ManningTable from './pages/ManningTable';
 import PlacementMeetingsTable from './pages/PlacementMeetingsTable';
+import StaffingForm from './pages/StaffingForm';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate  } from 'react-router-dom';
 import { UserContext, userData } from './components/userContext';
@@ -57,12 +58,17 @@ const App = () => {
           <Link to='/placementMeetings'>
           PlacementMeetings
           </Link>
+        </Menu.Item>
+        <Menu.Item  key="5">
+        <Link to='/staffingForm'>
+          StaffingForm
+          </Link>
         </Menu.Item></>
          }
         
         {user['isAdmin'] ?
         <SubMenu
-          key="5"
+          key="6"
           title={
             <span className="submenu-title-wrapper">
               {user.user}
@@ -74,7 +80,7 @@ const App = () => {
             <Menu.Item onClick={() => logoutUser()} key="logout">Log out</Menu.Item>
         </SubMenu> : 
         <SubMenu
-        key="5"
+        key="6"
         title={
           <span className="submenu-title-wrapper">
             {user.user}
@@ -102,6 +108,7 @@ const App = () => {
         <Route path='/users' element={<UsersTable />} />
         <Route path='/manning' element={<ManningTable />} /> 
         <Route path='/placementMeetings' element={<PlacementMeetingsTable />} /> 
+        <Route path='/staffingForm' element={<StaffingForm />} /> 
        </Routes>
              
       </div>
