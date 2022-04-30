@@ -31,7 +31,7 @@ const App = () => {
      <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
       <userData.Consumer>
         {({logoutUser}) => 
-      <Menu theme="dark" mode="horizontal" >
+      <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]}>
       <Menu.Item key="0"> 
         <Link to='/'>
           <img src="/KALPAK-white.png" width={75} height={35}></img>
@@ -75,6 +75,7 @@ const App = () => {
             </span>
           }
           style={{backgroundColor: '#87CEFA', marginLeft: '44%'}}
+
         >
             <Menu.Item key="settings">Settings</Menu.Item>
             <Menu.Item onClick={() => logoutUser()} key="logout">Log out</Menu.Item>
