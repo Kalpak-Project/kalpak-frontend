@@ -51,8 +51,6 @@ const RolesTable = withUser(({user}) => {
 
     const coolmnsTitles = columns.map(elem => elem.title)
 
-   
-
     return (
         user === null ? <Navigate to='/login' /> :
         !user['isAdmin'] ? <Navigate to='/' /> :
