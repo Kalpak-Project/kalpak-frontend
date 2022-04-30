@@ -16,6 +16,7 @@ const Home = withUser(({user}) => {
 
     const [smile , setSmile] = useState(true);
     const [rolesList, setRolesList] = useState([]);
+    const [jobEndDate, setJobEndDate] = useState(null);
 
     const resetSmile = useCallback(
         () => {
@@ -45,6 +46,20 @@ const Home = withUser(({user}) => {
         [],
     )
 
+    
+    const resetJobEndDate = useCallback(
+        () => {
+            if (user["userRole"] != null){
+                console.log("user role: " + user["userRole"])
+                setJobEndDate(user["userRole"]["Job end date"])
+            } else {
+                console.log(typeof(user["userRole"]))
+                setJobEndDate(null)
+            }
+        },
+        []
+    )
+
 
     useEffect(() => {
        resetSmile()
@@ -54,12 +69,16 @@ const Home = withUser(({user}) => {
         resetRolesList()
      }, [])
 
+     useEffect(() => {
+        resetJobEndDate()
+     }, [])
+
 
     return (
         user === null ? <Navigate to='/login' /> : 
         <div>
-             {user["userRole"] !== null ?
-            <h2>{user["userRole"]["Job end date"]}</h2>:
+             {jobEndDate != null ?
+            <h2>{"Job end date: " + jobEndDate}</h2>:
             <h2 style={{color: "red"}}>WITHOUT ROLE!</h2>}
             {smile ? 
             <SmileTwoTone style={{fontSize: '80px', color: '#08c'}} /> : 
@@ -76,7 +95,7 @@ const Home = withUser(({user}) => {
             dataSource={rolesList}
             renderItem={item => (
                 <List.Item >
-                <Title level={4} bordered>{item["Title"]}</Title>
+                <Title level={4}>{item["Title"]}</Title>
                 </List.Item>
             )}
             />
