@@ -22,7 +22,7 @@ const Home = withUser(({user}) => {
         () => {
             axios.get(`/api/users/${user.id}/smile`).then(
                 res => {
-                    console.log("update data")
+                    console.log("update smile")
                     setSmile(res.data.smile)
                 }
             ).catch(err => {
@@ -57,7 +57,7 @@ const Home = withUser(({user}) => {
                 setJobEndDate(null)
             }
         },
-        []
+        [],
     )
 
 
@@ -77,8 +77,10 @@ const Home = withUser(({user}) => {
     return (
         user === null ? <Navigate to='/login' /> : 
         <div>
-             {jobEndDate != null ?
-            <h2>{"Job end date: " + jobEndDate}</h2>:
+             {jobEndDate != null && smile ?
+            <h2>{"Job end date: " + jobEndDate}</h2> :
+            jobEndDate != null && !smile ?
+            <h2 style={{color: "red"}}>{"Job end date: " + jobEndDate}</h2> :
             <h2 style={{color: "red"}}>WITHOUT ROLE!</h2>}
             {smile ? 
             <SmileTwoTone style={{fontSize: '80px', color: '#08c'}} /> : 

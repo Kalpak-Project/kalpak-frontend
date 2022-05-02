@@ -49,7 +49,7 @@ const RolesTable = withUser(({user}) => {
         }
     ]
 
-    const coolmnsTitles = columns.map(elem => elem.title)
+    const coolmnsTitles = columns.map(elem => ({title:elem.title}))
 
     return (
         user === null ? <Navigate to='/login' /> :

@@ -26,7 +26,8 @@ const LogInPage = withUser(({user, refreshUser}) => {
         ).catch(err => console.log(err.response.data))
       } else {
         const newUser = {"Private Name": values.private_name, "Family Name": values.family_name,
-          "Personal ID": values.personal_id, user_name: values.user_name, password: values.password}
+          "Personal ID": values.personal_id, user_name: values.user_name,
+          password: values.password, /* "isAdmin": false */}
         axios.post('/api/register', newUser).then(
           res => {
             refreshUser()
