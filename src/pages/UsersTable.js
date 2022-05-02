@@ -51,7 +51,7 @@ const UsersTable = ({user}) => {
         }
     ]
 
-    const cols = columns.map(elem => elem.title)
+    const cols = columns.map(elem => ({title:elem.title}))
 
     return (
         user === null ? <Navigate to='/login' /> :
