@@ -16,6 +16,7 @@ const Home = withUser(({user}) => {
 
     const [smile , setSmile] = useState(true);
     const [rolesList, setRolesList] = useState([]);
+    const [employeeList, setEmployeeList] = useState([]);
     const [jobEndDate, setJobEndDate] = useState(null);
 
     const resetSmile = useCallback(
@@ -32,12 +33,41 @@ const Home = withUser(({user}) => {
         [],
     )
 
-    const resetRolesList = useCallback(
+    const resetEmployeeList = useCallback(
         () => {
-            axios.get(`/api/optional_roles/${user.id}`).then(
+            axios.get(`/api/employee_status/${user.id}`).then(
                 res => {
                     console.log(res.data)
-                    setRolesList(res.data.dataRoles)
+                    setEmployeeList(res.data.employeeList)
+
+                }
+            ).catch(err => {
+                console.log(err)
+            })
+        }, [],
+    )
+
+    const resetRolesList = useCallback(
+        () => {
+                axios.get(`/api/optional_roles/${user.id}`).then(
+                    res => {
+                        console.log(res.data)
+                        setRolesList(res.data.dataRoles)
+                    }
+                ).catch(err => {
+                    console.log(err)
+                })
+        },
+        [],
+    )
+
+    const resetJobEndDate = useCallback(
+        () => {
+            console.log(user.id)
+            axios.get(`/api/user_role/${user.id}`).then(
+                res => {
+                    console.log(res.data)
+                    setJobEndDate(res.data.userRole["Job end date"])
                 }
             ).catch(err => {
                 console.log(err)
@@ -46,23 +76,12 @@ const Home = withUser(({user}) => {
         [],
     )
 
-    
-    const resetJobEndDate = useCallback(
-        () => {
-            if (user["userRole"] != null){
-                console.log("user role: " + user["userRole"])
-                setJobEndDate(user["userRole"]["Job end date"])
-            } else {
-                console.log(typeof(user["userRole"]))
-                setJobEndDate(null)
-            }
-        },
-        [],
-    )
-
 
     useEffect(() => {
        resetSmile()
+    }, [])
+    useEffect(() => {
+        resetEmployeeList()
     }, [])
 
     useEffect(() => {
@@ -76,31 +95,48 @@ const Home = withUser(({user}) => {
 
     return (
         user === null ? <Navigate to='/login' /> : 
-        <div>
-             {jobEndDate != null && smile ?
+        <div style={{marginTop: '-2rem'}}>
+            {jobEndDate !== null && smile ?
             <h2>{"Job end date: " + jobEndDate}</h2> :
-            jobEndDate != null && !smile ?
+            jobEndDate !== null && !smile ?
             <h2 style={{color: "red"}}>{"Job end date: " + jobEndDate}</h2> :
             <h2 style={{color: "red"}}>WITHOUT ROLE!</h2>}
-            {smile ? 
-            <SmileTwoTone style={{fontSize: '80px', color: '#08c'}} /> : 
+            {smile ?
+            <div> 
+                <SmileTwoTone style={{fontSize: '80px', color: '#08c'}} />
+                <h2 style={{color: "blue", marginLeft: "-1rem"}}>Employee status</h2>
+                <List
+                    // header={<h2 style={{color: "blue", marginLeft: "-1rem", marginTop: '-1rem'}}>Optional future roles</h2>}
+                    // footer={<div>Footer</div>}
+                    bordered
+                    style={{height: '20%', overflow: "auto", height: "300px"}}
+                    dataSource={employeeList}
+                    renderItem={item => (
+                        <List.Item >
+                        <Title style={{width: "20%"}} level={4}>{item["employee"]["user_name"]}</Title>
+                        {item["smile"] ? 
+                        <SmileTwoTone style={{fontSize: '30px', marginLeft: '5%' ,color: '#08c'}} /> : 
+                        <FrownTwoTone style={{fontSize: '30px', marginLeft: '5%' ,color: '#08c'}} />}
+                        </List.Item>
+                    )}
+                />
+            </div> : 
             <div>
-            <FrownTwoTone style={{fontSize: '80px', color: '#08c'}} />
-           
-            {/* <h2>{user["userRole"]["Job end date"]}</h2> */}
-                        
-            <List
-            header={<h2 style={{color: "blue", marginLeft: "-1rem"}}>Optional future roles</h2>}
-            // footer={<div>Footer</div>}
-            bordered
-            style={{marginTop: "2rem"}}
-            dataSource={rolesList}
-            renderItem={item => (
-                <List.Item >
-                <Title level={4}>{item["Title"]}</Title>
-                </List.Item>
-            )}
-            />
+                <FrownTwoTone style={{fontSize: '80px', color: '#08c'}} />
+            
+                <h2 style={{color: "blue", marginLeft: "-1rem"}}>Optional future roles</h2>           
+                <List
+                    // header={<h2 style={{color: "blue", marginLeft: "-1rem", marginTop: '-1rem'}}>Optional future roles</h2>}
+                    // footer={<div>Footer</div>}
+                    bordered
+                    style={{height: '20%', overflow: "auto", height: "300px"}}
+                    dataSource={rolesList}
+                    renderItem={item => (
+                        <List.Item >
+                        <Title level={4}>{item["Title"]}</Title>
+                        </List.Item>
+                    )}
+                />
             </div>
             }
         </div>

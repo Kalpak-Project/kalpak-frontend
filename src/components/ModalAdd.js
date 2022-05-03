@@ -76,7 +76,7 @@ const ModalAdd = ({onChange, table, fields, button}) => {
           confirmLoading={confirmLoading}
           onCancel={handleCancel}
           width={600}
-          bodyStyle={{height:320}}
+          bodyStyle={{height:370}}
           okButtonProps={{disabled: okBtnDisable}}
         >
         <Form    
