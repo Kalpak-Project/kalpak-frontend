@@ -3,8 +3,10 @@ import axios from 'axios';
 import { withUser } from '../components/userContext';
 import { Navigate } from 'react-router-dom';
 import { SmileTwoTone, FrownTwoTone } from '@ant-design/icons';
-import { Steps,Button, message } from 'antd';
+import { Steps,Button, message, Table, Radio, Divider } from 'antd';
 import { Role } from './RolesTable';
+
+
 
 
 
@@ -42,8 +44,75 @@ const StaffingForm = withUser(({user}) => {
         resetStaffingForm()
     }, [])
 
+    const columns = [
+        {
+          title: 'Name',
+          dataIndex: 'Private Name',
+          render: (text) => <a>{text}</a>,
+        },
+        {
+          title: 'Family',
+          dataIndex: 'Family Name',
+        },
+        {
+          title: 'Personal ID',
+          dataIndex: 'Personal ID',
+        },
+      ];
+      const data = [
+        {
+          key: '1',
+          'Private Name': 'John Brown',
+          'Family Name': 32,
+          'Personal ID': 1,
+        },
+        {
+          key: '2',
+          'Private Name': 'John Brown',
+          'Family Name': 32,
+          'Personal ID': 1,
+        },
+        {
+          key: '3',
+          'Private Name': 'John Brown',
+          'Family Name': 32,
+          'Personal ID': 1,
+        },
+      ]; // rowSelection object indicates the need for row selection
+
+
+      const rowSelection = {
+        onChange: (selectedRowKeys, selectedRows) => {
+          console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+        },
+        getCheckboxProps: (record) => ({
+          disabled: record.name === 'Disabled User',
+          // Column configuration not to be checked
+          name: record.name,
+        }),
+      };
+ 
+
     const { Step } = Steps;
 
+    const content =   <div>
+    <Radio.Group
+      value={"radio"}
+    >
+     
+    </Radio.Group>
+
+    <Divider />
+
+    <Table
+      rowSelection={{
+        type: "radio",
+        ...rowSelection,
+      }}
+      columns={columns}
+      dataSource={data}
+    />
+  </div>
 
 
         return (
@@ -57,7 +126,7 @@ const StaffingForm = withUser(({user}) => {
                 <Step key={Role.Title} title={Role.Title} />
                 )}
             </Steps>
-            <div className="steps-content">{"Candidates for the position"}</div>
+            <div className="steps-content">{content}</div>
             <div className="steps-action">
                 {current < staffingForm.length - 1 && (
                 <Button type="primary" onClick={() => next()}>
