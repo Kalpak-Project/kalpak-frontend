@@ -37,21 +37,29 @@ const UsersTable = ({user}) => {
         {
             title: 'Private Name',
             dataIndex: 'Private Name',
-            width: '25%',
+            width: '20%',
         },
         {
             title: 'user_name',
             dataIndex: 'user_name',
-            width: '25%',
+            width: '20%',
         },
         {
             title: 'Personal ID',
             dataIndex: 'Personal ID',
-            width: '25%',
+            width: '20%',
+        },
+        {
+            title: 'Employer',
+            dataIndex: 'Employer',
+            width: '20%',
+            render: (text, record) => <User value={text}/>,
+            inputRender: (value, onChange)=><UserSelect key={1} value={value} onChange={onChange}/>,
         }
+
     ]
 
-    const cols = columns.map(elem => elem.title)
+    const cols = columns.map(elem => ({title:elem.title, inputRender:elem.inputRender}))
 
     return (
         user === null ? <Navigate to='/login' /> :
