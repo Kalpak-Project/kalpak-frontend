@@ -75,7 +75,6 @@ const App = () => {
             </span>
           }
           style={{backgroundColor: '#87CEFA', marginLeft: '44%'}}
-
         >
             <Menu.Item key="settings">Settings</Menu.Item>
             <Menu.Item onClick={() => logoutUser()} key="logout">Log out</Menu.Item>
