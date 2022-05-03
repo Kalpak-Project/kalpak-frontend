@@ -33,7 +33,6 @@ const Home = withUser(({user}) => {
         [],
     )
 
-
     const resetEmployeeList = useCallback(
         () => {
             axios.get(`/api/employee_status/${user.id}`).then(
@@ -85,14 +84,6 @@ const Home = withUser(({user}) => {
     useEffect(() => {
         resetEmployeeList()
     }, [])
-
-    useEffect(() => {
-        resetRolesList()
-     }, [])
-
-     useEffect(() => {
-        resetJobEndDate()
-     }, [])
 
     useEffect(() => {
         resetRolesList()
