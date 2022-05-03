@@ -18,7 +18,7 @@ const Home = withUser(({user}) => {
     const [rolesList, setRolesList] = useState([]);
     const [employeeList, setEmployeeList] = useState([]);
     const [jobEndDate, setJobEndDate] = useState(null);
-
+  
     const resetSmile = useCallback(
         () => {
             axios.get(`/api/users/${user.id}/smile`).then(
@@ -60,6 +60,7 @@ const Home = withUser(({user}) => {
         },
         [],
     )
+
 
     const resetJobEndDate = useCallback(
         () => {
