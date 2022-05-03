@@ -50,8 +50,8 @@ const UsersTable = ({user}) => {
             width: '20%',
         },
         {
-            title: 'Commander',
-            dataIndex: 'Commander',
+            title: 'Employer',
+            dataIndex: 'Employer',
             width: '20%',
             render: (text, record) => <User value={text}/>,
             inputRender: (value, onChange)=><UserSelect key={1} value={value} onChange={onChange}/>,

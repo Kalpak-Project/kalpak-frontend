@@ -16,7 +16,7 @@ const Home = withUser(({user}) => {
 
     const [smile , setSmile] = useState(true);
     const [rolesList, setRolesList] = useState([]);
-    const [soldiersList, setSoldiersList] = useState([]);
+    const [employeeList, setEmployeeList] = useState([]);
     const [jobEndDate, setJobEndDate] = useState(null);
 
     const resetSmile = useCallback(
@@ -33,12 +33,12 @@ const Home = withUser(({user}) => {
         [],
     )
 
-    const resetSoldiersList = useCallback(
+    const resetEmployeeList = useCallback(
         () => {
-            axios.get(`/api/soldiers_status/${user.id}`).then(
+            axios.get(`/api/employee_status/${user.id}`).then(
                 res => {
                     console.log(res.data)
-                    setSoldiersList(res.data.soldiersList)
+                    setEmployeeList(res.data.employeeList)
 
                 }
             ).catch(err => {
@@ -81,7 +81,7 @@ const Home = withUser(({user}) => {
        resetSmile()
     }, [])
     useEffect(() => {
-        resetSoldiersList()
+        resetEmployeeList()
     }, [])
 
     useEffect(() => {
@@ -110,10 +110,10 @@ const Home = withUser(({user}) => {
                     // footer={<div>Footer</div>}
                     bordered
                     style={{height: '20%', overflow: "auto", height: "300px"}}
-                    dataSource={soldiersList}
+                    dataSource={employeeList}
                     renderItem={item => (
                         <List.Item >
-                        <Title style={{width: "20%"}} level={4}>{item["soldier"]["user_name"]}</Title>
+                        <Title style={{width: "20%"}} level={4}>{item["employee"]["user_name"]}</Title>
                         {item["smile"] ? 
                         <SmileTwoTone style={{fontSize: '30px', marginLeft: '5%' ,color: '#08c'}} /> : 
                         <FrownTwoTone style={{fontSize: '30px', marginLeft: '5%' ,color: '#08c'}} />}
