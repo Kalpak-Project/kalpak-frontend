@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { withUser } from '../components/userContext';
 import { Navigate } from 'react-router-dom';
@@ -10,7 +10,7 @@ const StaffingForm = withUser(({user}) => {
      
     const [{staffingForm, loading} ,setStaffingForm] = useState({staffingForm:[], loading: true});
     const [selectedUser , setSelectedUser] = useState();
-    const [current, setCurrent] = React.useState(0);
+    const [current, setCurrent] = useState(0);
 
     const next = () => {
         setCurrent(current + 1);
@@ -22,7 +22,7 @@ const StaffingForm = withUser(({user}) => {
     
     const resetStaffingForm = useCallback(
         () => {
-            axios.get('/api/StaffingForm').then(
+            axios.get('/api/staffingForm').then(
                 res => {
                     console.log(res.data.staffingForm)
                     setSelectedUser(res.data.staffingForm.map(()=>[]))
@@ -72,8 +72,8 @@ const StaffingForm = withUser(({user}) => {
 
     <Divider />
     
-
-    <Table
+    <Table 
+    scroll={{ y: 170 }}
       rowSelection={  
         {
         onChange: (selectedRowKeys, selectedRows) => {
@@ -95,6 +95,7 @@ const StaffingForm = withUser(({user}) => {
     />
   </div>
 
+        
 
 
         return (
@@ -103,23 +104,25 @@ const StaffingForm = withUser(({user}) => {
             !user['isAdmin'] ? <Navigate to='/' /> : 
             
             <>
-            <Steps current={current}>
+            <Steps style={{height: '1%' , margin: '-10px'}} current={current}>
                 {staffingForm.map(({Role}, i) =>
                 <Step key={i} title={Role.Title} />
                 )}
             </Steps>
             <div className="steps-content">{content}</div>
 
-            <div className="steps-action">
+            <div  className="steps-action">
             {current < staffingForm.length - 1 && 
-                <Button type="primary" onClick={() => next()}>
+                <Button  style={{marginBottom: '4%',marginInline: '1%' }} type="primary" onClick={() => next()}>
                     Next
                 </Button>
                 }
 
+{/* res.data.staffingForm.map(()=>[]) */}
             {current === staffingForm.length - 1 && 
-                <Button type="primary" onClick={() => {
-                    axios.set('/api/selectedUserRole', {Role: staffingForm ,User: selectedUser}).then(
+                <Button style={{marginBottom: '4%' ,marginInline: '1%'}} type="primary" onClick={() => {
+                    axios.post('/api/selectedUserRole', {Roles: staffingForm.map(({Role})=> Role["_id"]) ,Users: selectedUser}).then(
+                       console.log({Roles: staffingForm.map(({Role})=>Role["_id"]) ,Users: selectedUser})
                     ).catch(err => {
                     console.log(err)
                 });
@@ -129,7 +132,7 @@ const StaffingForm = withUser(({user}) => {
                 }
                 
             {current > 0 && 
-                <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
+                <Button  onClick={() => prev()}>
                     Previous
                 </Button>
                 }
