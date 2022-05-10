@@ -60,10 +60,12 @@ const PlacementMeetingsTable = withUser(({user}) => {
         </div>
     )
 })
+
 const Smile = ({value}) => {
     console.log(value) 
     {return value ?
         <SmileTwoTone style={{fontSize: '30px', marginLeft: '5%' ,color: '#08c'}} /> : 
         <FrownTwoTone style={{fontSize: '30px', marginLeft: '5%' ,color: '#08c'}} />} 
 }
+
 export default PlacementMeetingsTable

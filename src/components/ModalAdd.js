@@ -75,7 +75,7 @@ const ModalAdd = ({onChange, table, fields, button}) => {
           onOk={handleOk}
           confirmLoading={confirmLoading}
           onCancel={handleCancel}
-          width={600}
+          width={540}
           bodyStyle={{height:370}}
           okButtonProps={{disabled: okBtnDisable}}
         >
@@ -95,8 +95,9 @@ const ModalAdd = ({onChange, table, fields, button}) => {
                   key={title} className='items-from-modal-add'>
                {inputRender?
                inputRender(data[i],(newValue)=>onValueChange(title,newValue)):
-                <Input style={{width: 300}} value={data[i]} onChange={(event) => onValueChange(title, event.target.value)} placeholder={"Enter the "+title} />
+                <Input style={{width: 250}} value={data[i]} onChange={(event) => onValueChange(title, event.target.value)} placeholder={"Enter the "+title} />
                }
+               {title == 'Duration' && <font style={{fontSize: 'small'}}> Days</font>}
                 </Form.Item>
         )}      
       </Form>
