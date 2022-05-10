@@ -2,11 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { withUser } from '../components/userContext';
 import { Navigate } from 'react-router-dom';
-import { Steps,Button, message, Table, Radio, Divider, Spin} from 'antd';
-
+import { Steps, Button, message, Table, Radio, Divider, Spin} from 'antd';
+import { SmileTwoTone, FrownTwoTone } from '@ant-design/icons';
+import { Role } from './RolesTable';
 
 const StaffingForm = withUser(({user}) => {
-
      
     const [{staffingForm, loading} ,setStaffingForm] = useState({staffingForm:[], loading: true});
     const [selectedUser , setSelectedUser] = useState();
@@ -56,7 +56,6 @@ const StaffingForm = withUser(({user}) => {
         },
       ];
 
- 
 
     const { Step } = Steps;
     console.log(current , staffingForm[current])
@@ -95,9 +94,6 @@ const StaffingForm = withUser(({user}) => {
     />
   </div>
 
-        
-
-
         return (
           
             user === null ? <Navigate to='/login' /> :
@@ -113,7 +109,6 @@ const StaffingForm = withUser(({user}) => {
 
             <div  className="steps-action">
             {current < staffingForm.length - 1 && 
-                <Button  style={{marginBottom: '4%',marginInline: '1%' }} type="primary" onClick={() => next()}>
                     Next
                 </Button>
                 }

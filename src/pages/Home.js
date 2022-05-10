@@ -13,10 +13,9 @@ const Home = withUser(({user}) => {
 
     const { Title } = Typography;
 
-
     const [smile , setSmile] = useState(true);
-    const [rolesList, setRolesList] = useState([]);
-    const [employeeList, setEmployeeList] = useState([]);
+    const [{rolesList, loadingRoles}, setRolesList] = useState({rolesList: [], loadingRoles: true });
+    const [{employeeList, loadingEmployee}, setEmployeeList] = useState({employeeList: [], loadingEmployee: true});
     const [jobEndDate, setJobEndDate] = useState(null);
   
     const resetSmile = useCallback(
@@ -39,7 +38,7 @@ const Home = withUser(({user}) => {
             axios.get(`/api/employee_status/${user.id}`).then(
                 res => {
                     console.log(res.data)
-                    setEmployeeList(res.data.employeeList)
+                    setEmployeeList({employeeList: res.data.employeeList, loadingEmployee: false})
 
                 }
             ).catch(err => {
@@ -53,7 +52,7 @@ const Home = withUser(({user}) => {
                 axios.get(`/api/optional_roles/${user.id}`).then(
                     res => {
                         console.log(res.data)
-                        setRolesList(res.data.dataRoles)
+                        setRolesList({rolesList: res.data.dataRoles, loadingRoles: false})
                     }
                 ).catch(err => {
                     console.log(err)
@@ -78,10 +77,10 @@ const Home = withUser(({user}) => {
         [],
     )
 
-
     useEffect(() => {
        resetSmile()
     }, [])
+
     useEffect(() => {
         resetEmployeeList()
     }, [])
@@ -119,6 +118,7 @@ const Home = withUser(({user}) => {
                     // header={<h2 style={{color: "blue", marginLeft: "-1rem", marginTop: '-1rem'}}>Optional future roles</h2>}
                     // footer={<div>Footer</div>}
                     bordered
+                    loading={loadingEmployee}
                     style={{height: '20%', overflow: "auto", height: "300px"}}
                     dataSource={employeeList}
                     renderItem={item => (
@@ -139,6 +139,7 @@ const Home = withUser(({user}) => {
                     // header={<h2 style={{color: "blue", marginLeft: "-1rem", marginTop: '-1rem'}}>Optional future roles</h2>}
                     // footer={<div>Footer</div>}
                     bordered
+                    loading={loadingRoles}
                     style={{height: '20%', overflow: "auto", height: "300px"}}
                     dataSource={rolesList}
                     renderItem={item => (

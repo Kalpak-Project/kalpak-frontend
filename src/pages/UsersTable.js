@@ -32,7 +32,7 @@ const UsersTable = ({user}) => {
         {
             title: 'Family Name',
             dataIndex: 'Family Name',
-            width: '25%',
+            width: '20%',
         },
         {
             title: 'Private Name',

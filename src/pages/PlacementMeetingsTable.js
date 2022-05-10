@@ -67,4 +67,5 @@ const Smile = ({value}) => {
         <SmileTwoTone style={{fontSize: '30px', marginLeft: '5%' ,color: '#08c'}} /> : 
         <FrownFilled style={{fontSize: '30px', marginLeft: '5%' ,color:  '#08c'}} />} 
 }
+
 export default PlacementMeetingsTable

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import axios from 'axios';
-import { Table, Select, Spin } from 'antd';
+import { Table, Select, Spin, InputNumber } from 'antd';
 import ModalAdd from '../components/ModalAdd';
 import { withUser } from '../components/userContext';
 import { Navigate } from 'react-router-dom';
@@ -38,9 +38,10 @@ const RolesTable = withUser(({user}) => {
             width: '33%',
         },
         {
-            title: 'Duration',
+            title: 'Duration (in days)',
             dataIndex: 'Duration',
             width: '33%',
+            inputRender: (value, onChange)=><InputNumber size="small" min={0} max={1000} defaultValue={0} value={value} onChange={onChange} />,
         },
         {
             title: 'Description',
@@ -50,7 +51,8 @@ const RolesTable = withUser(({user}) => {
     ]
 
 
-    const coolmnsTitles = columns.map(elem => ({title:elem.title}))
+
+    const coolmnsTitles = columns.map(elem => ({title:elem.dataIndex, inputRender:elem.inputRender}))
 
     return (
         user === null ? <Navigate to='/login' /> :
