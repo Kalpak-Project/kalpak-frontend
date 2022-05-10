@@ -109,6 +109,7 @@ const StaffingForm = withUser(({user}) => {
 
             <div  className="steps-action">
             {current < staffingForm.length - 1 && 
+            <Button  style={{marginBottom: '4%',marginInline: '1%' }} type="primary" onClick={() => next()}>
                     Next
                 </Button>
                 }
