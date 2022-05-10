@@ -4,7 +4,7 @@ import { Table } from 'antd';
 import ModalAdd from '../components/ModalAdd';
 import { withUser } from '../components/userContext';
 import { Navigate } from 'react-router-dom';
-import { SmileTwoTone, FrownTwoTone } from '@ant-design/icons';
+import { SmileTwoTone , FrownFilled} from '@ant-design/icons';
 import { List, Typography } from 'antd';
 
 
@@ -31,6 +31,7 @@ const Home = withUser(({user}) => {
         },
         [],
     )
+
 
     const resetEmployeeList = useCallback(
         () => {
@@ -92,6 +93,14 @@ const Home = withUser(({user}) => {
         resetJobEndDate()
      }, [])
 
+    useEffect(() => {
+        resetRolesList()
+     }, [])
+
+     useEffect(() => {
+        resetJobEndDate()
+     }, [])
+
 
     return (
         user === null ? <Navigate to='/login' /> : 
@@ -117,13 +126,13 @@ const Home = withUser(({user}) => {
                         <Title style={{width: "20%"}} level={4}>{item["employee"]["user_name"]}</Title>
                         {item["smile"] ? 
                         <SmileTwoTone style={{fontSize: '30px', marginLeft: '5%' ,color: '#08c'}} /> : 
-                        <FrownTwoTone style={{fontSize: '30px', marginLeft: '5%' ,color: '#08c'}} />}
+                        <FrownFilled style={{fontSize: '30px', marginLeft: '5%' ,color: '#08c'}} />}
                         </List.Item>
                     )}
                 />
             </div> : 
             <div>
-                <FrownTwoTone style={{fontSize: '80px', color: '#08c'}} />
+                <FrownFilled style={{fontSize: '80px', color: '#08c'}} />
             
                 <h2 style={{color: "blue", marginLeft: "-1rem"}}>Optional future roles</h2>           
                 <List

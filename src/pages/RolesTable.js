@@ -51,6 +51,7 @@ const RolesTable = withUser(({user}) => {
     ]
 
 
+
     const coolmnsTitles = columns.map(elem => ({title:elem.dataIndex, inputRender:elem.inputRender}))
 
     return (

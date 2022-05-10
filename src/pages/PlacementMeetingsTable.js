@@ -4,7 +4,7 @@ import { Table } from 'antd';
 import { withUser } from '../components/userContext';
 import { Navigate } from 'react-router-dom';
 import { Role, RoleSelect } from './RolesTable';
-import { SmileTwoTone, FrownTwoTone } from '@ant-design/icons';
+import { SmileTwoTone , FrownFilled} from '@ant-design/icons';
 
 
 
@@ -65,7 +65,7 @@ const Smile = ({value}) => {
     console.log(value) 
     {return value ?
         <SmileTwoTone style={{fontSize: '30px', marginLeft: '5%' ,color: '#08c'}} /> : 
-        <FrownTwoTone style={{fontSize: '30px', marginLeft: '5%' ,color: '#08c'}} />} 
+        <FrownFilled style={{fontSize: '30px', marginLeft: '5%' ,color:  '#08c'}} />} 
 }
 
 export default PlacementMeetingsTable

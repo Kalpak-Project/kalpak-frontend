@@ -1,21 +1,16 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { withUser } from '../components/userContext';
 import { Navigate } from 'react-router-dom';
+import { Steps, Button, message, Table, Radio, Divider, Spin} from 'antd';
 import { SmileTwoTone, FrownTwoTone } from '@ant-design/icons';
-import { Steps,Button, message, Table, Radio, Divider } from 'antd';
 import { Role } from './RolesTable';
 
-
-
-
-
 const StaffingForm = withUser(({user}) => {
-
      
-    const [{staffingForm, loading}, setStaffingForm] = useState({staffingForm:[], loading: true});
-
-    const [current, setCurrent] = React.useState(0);
+    const [{staffingForm, loading} ,setStaffingForm] = useState({staffingForm:[], loading: true});
+    const [selectedUser , setSelectedUser] = useState();
+    const [current, setCurrent] = useState(0);
 
     const next = () => {
         setCurrent(current + 1);
@@ -27,10 +22,11 @@ const StaffingForm = withUser(({user}) => {
     
     const resetStaffingForm = useCallback(
         () => {
-            axios.get('/api/StaffingForm').then(
+            axios.get('/api/staffingForm').then(
                 res => {
                     console.log(res.data.staffingForm)
-                    setStaffingForm({staffingForm: res.data.staffingForm, loading: false})
+                    setSelectedUser(res.data.staffingForm.map(()=>[]))
+                    setStaffingForm({staffingForm: res.data.staffingForm, loading: false })
                 }
             ).catch(err => {
                 console.log(err)
@@ -59,43 +55,14 @@ const StaffingForm = withUser(({user}) => {
           dataIndex: 'Personal ID',
         },
       ];
-      const data = [
-        {
-          key: '1',
-          'Private Name': 'John Brown',
-          'Family Name': 32,
-          'Personal ID': 1,
-        },
-        {
-          key: '2',
-          'Private Name': 'John Brown',
-          'Family Name': 32,
-          'Personal ID': 1,
-        },
-        {
-          key: '3',
-          'Private Name': 'John Brown',
-          'Family Name': 32,
-          'Personal ID': 1,
-        },
-      ]; // rowSelection object indicates the need for row selection
 
-
-      const rowSelection = {
-        onChange: (selectedRowKeys, selectedRows) => {
-          console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-        },
-        getCheckboxProps: (record) => ({
-          disabled: record.name === 'Disabled User',
-          // Column configuration not to be checked
-          name: record.name,
-        }),
-      };
- 
 
     const { Step } = Steps;
+    console.log(current , staffingForm[current])
 
-    const content =   <div>
+    const content =  loading ? 
+    <Spin></Spin>: 
+    <div>
     <Radio.Group
       value={"radio"}
     >
@@ -103,17 +70,29 @@ const StaffingForm = withUser(({user}) => {
     </Radio.Group>
 
     <Divider />
-
-    <Table
-      rowSelection={{
+    
+    <Table 
+    scroll={{ y: 170 }}
+      rowSelection={  
+        {
+        onChange: (selectedRowKeys, selectedRows) => {
+            setSelectedUser((pv)=> pv.map((ps,i)=>i === current? selectedRowKeys: ps))
+            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+            }, 
+        selectedRowKeys: selectedUser[current],
+               
+        getCheckboxProps: (record) => ({
+            disabled: record.name === 'Disabled User',
+            // Column configuration not to be checked
+            name: record.name,
+        }),
+              
         type: "radio",
-        ...rowSelection,
       }}
       columns={columns}
-      dataSource={data}
+      dataSource={staffingForm[current].User}
     />
   </div>
-
 
         return (
           
@@ -121,28 +100,37 @@ const StaffingForm = withUser(({user}) => {
             !user['isAdmin'] ? <Navigate to='/' /> : 
             
             <>
-            <Steps current={current}>
-                {staffingForm.map(({Role}) =>
-                <Step key={Role.Title} title={Role.Title} />
+            <Steps style={{height: '1%' , margin: '-10px'}} current={current}>
+                {staffingForm.map(({Role}, i) =>
+                <Step key={i} title={Role.Title} />
                 )}
             </Steps>
             <div className="steps-content">{content}</div>
-            <div className="steps-action">
-                {current < staffingForm.length - 1 && (
-                <Button type="primary" onClick={() => next()}>
+
+            <div  className="steps-action">
+            {current < staffingForm.length - 1 && 
                     Next
                 </Button>
-                )}
-                {current === staffingForm.length - 1 && (
-                <Button type="primary" onClick={() => message.success('Processing complete!')}>
+                }
+
+{/* res.data.staffingForm.map(()=>[]) */}
+            {current === staffingForm.length - 1 && 
+                <Button style={{marginBottom: '4%' ,marginInline: '1%'}} type="primary" onClick={() => {
+                    axios.post('/api/selectedUserRole', {Roles: staffingForm.map(({Role})=> Role["_id"]) ,Users: selectedUser}).then(
+                       console.log({Roles: staffingForm.map(({Role})=>Role["_id"]) ,Users: selectedUser})
+                    ).catch(err => {
+                    console.log(err)
+                });
+                message.success('Processing complete!');}}>
                     Done
                 </Button>
-                )}
-                {current > 0 && (
-                <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
+                }
+                
+            {current > 0 && 
+                <Button  onClick={() => prev()}>
                     Previous
                 </Button>
-                )}
+                }
             </div>
             </>
         );
@@ -151,51 +139,4 @@ const StaffingForm = withUser(({user}) => {
 
 export default StaffingForm
 
-    // const steps = staffingForm.map(role =>(
-    //     {
-    //         title: role["Title"],
-    //         content: 'user',
-        
-    //     }
-    // ))
-
-    // const steps = [
-    //     {
-    //       title: 'First',
-    //       content: 'First-content',
-    //     },
-    //     {
-    //       title: 'Second',
-    //       content: 'Second-content',
-    //     },
-    //     {
-    //       title: 'Last',
-    //       content: 'Last-content',
-    //     },
-    //   ];
-    //   staffingForm[current]["Description"]
-//     const customDot = (dot, { status, index }) => (
-//       <Popover
-//         content={
-//           <span>
-//             step {index} status: {status}
-//           </span>
-//         }
-//       >
-//         {dot}
-//       </Popover>
-//     );
     
-//     return (
-//         user === null ? <Navigate to='/login' /> :
-//         !user['isAdmin'] ? <Navigate to='/' /> : 
-    
-//         <Steps current={0} progressDot={customDot}>
-      
-//         {staffingForm.map(({Role}) =>
-//         <Step title={Role["Title"]} description={Role["Description"]} />
-
-// )}      
-//         </Steps>
-
-//     );

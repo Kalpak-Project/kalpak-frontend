@@ -54,14 +54,14 @@ const ManningTable = withUser(({user}) => {
             title: 'Date of staffing',
             dataIndex: 'Date of staffing',
             width: '25%',
-            render: value => <Moment date={value}/>,
+            render: value => <Moment date={value} format = {"DD-MM-yyyy"}/>,
             inputRender: (value, onChange)=><DatePicker key={1} date={value} onChange={(newValue)=>onChange(newValue.toISOString())}/>,
         },
         {
             title: 'Job end date',
             dataIndex: 'Job end date',
             width: '25%',
-            render: value => <Moment date={value}/>,
+            render: value => <Moment date={value}  format = {"DD-MM-yyyy"}/>,
             inputRender: (value, onChange)=><DatePicker key={1} date={value} onChange={(newValue)=>onChange(newValue.toISOString())}/>,
         }
 
