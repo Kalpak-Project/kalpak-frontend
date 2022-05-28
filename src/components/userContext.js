@@ -3,6 +3,7 @@ import { createContext, useEffect, useState, useCallback } from "react";
 import {useNavigate} from 'react-router-dom';
 
 export const userData = createContext(null)
+
 export const UserContext = ({children}) => {
     const [user, setUser] = useState()
     const navigate = useNavigate()

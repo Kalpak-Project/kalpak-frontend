@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import axios from 'axios';
-import { Table } from 'antd';
+import { Button, Table } from 'antd';
 import ModalAdd from '../components/ModalAdd';
 import { withUser } from '../components/userContext';
 import { Navigate } from 'react-router-dom';
@@ -77,6 +77,25 @@ const Home = withUser(({user}) => {
         [],
     )
 
+    const changeRolesOrder = ((changedIndex, action) => {
+        var orderedList = Array.from(rolesList);
+        var currentRole = orderedList[changedIndex];
+        var otherRole;
+        console.log("current index: " + currentRole.index + ", changedIndex: " + changedIndex)
+        if (action === 'up'){
+            otherRole = orderedList[changedIndex - 1]
+            currentRole['index'] = changedIndex - 1
+            otherRole['index'] = changedIndex
+        } else {
+            otherRole = orderedList[changedIndex + 1]
+            currentRole['index'] = changedIndex + 1
+            otherRole['index'] = changedIndex
+        }
+        setRolesList({rolesList: orderedList, loadingRoles: false})
+        console.log("indexafterchange: " + currentRole.index)
+        console.log("insexofotherafterchange: " + otherRole)
+    })
+
     useEffect(() => {
        resetSmile()
     }, [])
@@ -84,14 +103,6 @@ const Home = withUser(({user}) => {
     useEffect(() => {
         resetEmployeeList()
     }, [])
-
-    useEffect(() => {
-        resetRolesList()
-     }, [])
-
-     useEffect(() => {
-        resetJobEndDate()
-     }, [])
 
     useEffect(() => {
         resetRolesList()
@@ -140,11 +151,20 @@ const Home = withUser(({user}) => {
                     // footer={<div>Footer</div>}
                     bordered
                     loading={loadingRoles}
-                    style={{height: '20%', overflow: "auto", height: "300px"}}
-                    dataSource={rolesList}
-                    renderItem={item => (
-                        <List.Item >
+                    style={{overflow: "auto", height: "280px"}}
+                    dataSource={rolesList.sort((a, b) => a['index'] > b['index'] ? 1:-1)}
+                    renderItem={(item) => (
+                        <List.Item>
                         <Title level={4}>{item["Title"]}</Title>
+                        <div>
+                            {item['index'] !== 0 &&
+                            <Button onClick={() => changeRolesOrder(item['index'], 'up')}>UP</Button>
+                            }
+                            {item['index'] !== rolesList.length - 1 &&
+                            <Button onClick={() => changeRolesOrder(item['index'], 'down')}>DOWN</Button>
+                            }
+                        </div>
+                       
                         </List.Item>
                     )}
                 />
