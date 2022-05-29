@@ -4,7 +4,7 @@ import { Button, Table } from 'antd';
 import ModalAdd from '../components/ModalAdd';
 import { withUser } from '../components/userContext';
 import { Navigate } from 'react-router-dom';
-import { SmileTwoTone , FrownFilled} from '@ant-design/icons';
+import { UpOutlined, DownOutlined, SmileTwoTone , FrownFilled} from '@ant-design/icons';
 import { List, Typography } from 'antd';
 
 
@@ -31,7 +31,6 @@ const Home = withUser(({user}) => {
         },
         [],
     )
-
 
     const resetEmployeeList = useCallback(
         () => {
@@ -61,6 +60,16 @@ const Home = withUser(({user}) => {
         [],
     )
 
+    const sendForCalculation = useCallback(
+        () => {
+            axios.post('/api/updateRolesOrder',
+            {'userUpdate': `${user.id}`, 'orederedList': rolesList}).then(
+                res => {
+                    console.log(res)
+                    // need to print to user that the order updated. 
+            }).catch(err => {console.log(err)})
+        }, [],
+    )
 
     const resetJobEndDate = useCallback(
         () => {
@@ -81,7 +90,6 @@ const Home = withUser(({user}) => {
         var orderedList = Array.from(rolesList);
         var currentRole = orderedList[changedIndex];
         var otherRole;
-        console.log("current index: " + currentRole.index + ", changedIndex: " + changedIndex)
         if (action === 'up'){
             otherRole = orderedList[changedIndex - 1]
             currentRole['index'] = changedIndex - 1
@@ -92,8 +100,6 @@ const Home = withUser(({user}) => {
             otherRole['index'] = changedIndex
         }
         setRolesList({rolesList: orderedList, loadingRoles: false})
-        console.log("indexafterchange: " + currentRole.index)
-        console.log("insexofotherafterchange: " + otherRole)
     })
 
     useEffect(() => {
@@ -109,8 +115,14 @@ const Home = withUser(({user}) => {
      }, [])
 
      useEffect(() => {
+        sendForCalculation()
+     }, [])
+
+     useEffect(() => {
         resetJobEndDate()
      }, [])
+
+   
 
 
     return (
@@ -144,25 +156,21 @@ const Home = withUser(({user}) => {
             </div> : 
             <div>
                 <FrownFilled style={{fontSize: '80px', color: '#08c'}} />
-            
-                <h2 style={{color: "blue", marginLeft: "-1rem"}}>Optional future roles</h2>           
+                <h2 style={{position: 'fixed', color: "blue", marginLeft: "-1rem"}}>Optional future roles</h2> 
+                <Button shape='round' onClick={() => {sendForCalculation()}} style={{position: 'relative', marginLeft: '87%', marginBottom: '0rem'}}>Update Order</Button>         
                 <List
                     // header={<h2 style={{color: "blue", marginLeft: "-1rem", marginTop: '-1rem'}}>Optional future roles</h2>}
                     // footer={<div>Footer</div>}
                     bordered
                     loading={loadingRoles}
-                    style={{overflow: "auto", height: "280px"}}
+                    style={{overflow: "auto", height: "280px", marginTop: '1rem'}}
                     dataSource={rolesList.sort((a, b) => a['index'] > b['index'] ? 1:-1)}
                     renderItem={(item) => (
                         <List.Item>
                         <Title level={4}>{item["Title"]}</Title>
                         <div>
-                            {item['index'] !== 0 &&
-                            <Button onClick={() => changeRolesOrder(item['index'], 'up')}>UP</Button>
-                            }
-                            {item['index'] !== rolesList.length - 1 &&
-                            <Button onClick={() => changeRolesOrder(item['index'], 'down')}>DOWN</Button>
-                            }
+                            <Button disabled={item['index'] === 0} style={{paddingLeft: '1rem', paddingRight: '1rem'}} shape='round' onClick={() => changeRolesOrder(item['index'], 'up')}><UpOutlined /></Button>
+                            <Button disabled={item['index'] === rolesList.length - 1} shape='round' onClick={() => changeRolesOrder(item['index'], 'down')}><DownOutlined /></Button>
                         </div>
                        
                         </List.Item>
