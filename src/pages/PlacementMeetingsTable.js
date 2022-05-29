@@ -56,7 +56,7 @@ const PlacementMeetingsTable = withUser(({user}) => {
         user === null ? <Navigate to='/login' /> :
         !user['isAdmin'] ? <Navigate to='/' /> : 
         <div>
-            <Table loading={loading} dataSource={placementMeetings} columns={columns} pagination={{ pageSize: 40 }} scroll={{ y: 250 }} />  
+            <Table loading={loading} dataSource={placementMeetings} columns={columns} pagination={{ pageSize: 40 }} scroll={{ y: 350 }} />  
         </div>
     )
 })

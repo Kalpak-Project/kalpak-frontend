@@ -59,7 +59,7 @@ const RolesTable = withUser(({user}) => {
         !user['isAdmin'] ? <Navigate to='/' /> :
         <div>
             <ModalAdd onChange={resetRoles} table={"roles"} fields={coolmnsTitles} button='Add New Role' />
-            <Table loading={loading} dataSource={roles} columns={columns} pagination={{ pageSize: 40 }} scroll={{ y: 250 }} />
+            <Table loading={loading} dataSource={roles} columns={columns} pagination={{ pageSize: 40 }} scroll={{ y: 320 }} />
         </div>
     )
 })
