@@ -46,29 +46,29 @@ const Home = withUser(({user}) => {
         }, [],
     )
 
+    const sendForCalculation = useCallback(
+        () => {
+            axios.post('/api/updateRolesOrder',
+            {'userUpdate': `${user.id}`, 'orderedList': rolesList}).then(
+                res => {
+                    console.log('orederedList',  rolesList)
+                    // need to print to user that the order updated. 
+            }).catch(err => {console.log(err)})
+        }, [rolesList],
+    )
+
     const resetRolesList = useCallback(
         () => {
                 axios.get(`/api/optional_roles/${user.id}`).then(
                     res => {
-                        console.log(res.data)
                         setRolesList({rolesList: res.data.dataRoles, loadingRoles: false})
+                        console.log(rolesList)
                     }
                 ).catch(err => {
                     console.log(err)
                 })
         },
         [],
-    )
-
-    const sendForCalculation = useCallback(
-        () => {
-            axios.post('/api/updateRolesOrder',
-            {'userUpdate': `${user.id}`, 'orederedList': rolesList}).then(
-                res => {
-                    console.log(res)
-                    // need to print to user that the order updated. 
-            }).catch(err => {console.log(err)})
-        }, [],
     )
 
     const resetJobEndDate = useCallback(
@@ -110,17 +110,18 @@ const Home = withUser(({user}) => {
         resetEmployeeList()
     }, [])
 
+    // useEffect(() => {
+    //     sendForCalculation()
+    //  }, [])
+
     useEffect(() => {
         resetRolesList()
      }, [])
 
      useEffect(() => {
-        sendForCalculation()
-     }, [])
-
-     useEffect(() => {
         resetJobEndDate()
      }, [])
+
 
    
 
