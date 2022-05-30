@@ -65,11 +65,10 @@ const ModalAdd = ({onChange, table, fields, button}) => {
   
     return (
       <>
-        <Button type="primary" onClick={showModal} >
-            {button}
+        <Button type="primary" shape='round' onClick={showModal} >
+          {button}
         </Button>
         <Modal
-         
           title={button}
           visible={visible}
           onOk={handleOk}

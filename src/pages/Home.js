@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import axios from 'axios';
-import { Button, Table } from 'antd';
-import ModalAdd from '../components/ModalAdd';
+import { Button } from 'antd';
 import { withUser } from '../components/userContext';
 import { Navigate } from 'react-router-dom';
 import { UpOutlined, DownOutlined, SmileTwoTone , FrownFilled} from '@ant-design/icons';
@@ -157,7 +156,7 @@ const Home = withUser(({user}) => {
             </div> : 
             <div>
                 <FrownFilled style={{fontSize: '80px', color: '#08c'}} />
-                <h2 style={{position: 'fixed', color: "blue", marginLeft: "-1rem"}}>Optional future roles</h2> 
+                <h2 style={{position: 'fixed', color: "blue", marginLeft: "-1rem"}}>Optional future roles</h2>
                 <Button shape='round' onClick={() => {sendForCalculation()}} style={{position: 'relative', marginLeft: '87%', marginBottom: '0rem'}}>Update Order</Button>         
                 <List
                     // header={<h2 style={{color: "blue", marginLeft: "-1rem", marginTop: '-1rem'}}>Optional future roles</h2>}
