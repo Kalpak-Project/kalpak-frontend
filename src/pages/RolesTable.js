@@ -65,9 +65,9 @@ const RolesTable = withUser(({user}) => {
 
     const edit = (record) => {
         form.setFieldsValue({
-          name: '',
-          age: '',
-          address: '',
+          Title: '',
+          Duration: '',
+          Description: '',
           ...record,
         });
         setEditingKey(record.key);
@@ -77,17 +77,26 @@ const RolesTable = withUser(({user}) => {
         setEditingKey('');
       };
 
+      const updateDB = useCallback( 
+        (key, newDoc) => {
+        axios.post(`/api/roles/${key}`, newDoc).then(
+            res => {
+                console.log(newDoc)
+            }).catch(err => console.log(err))
+      }, [roles])
+
       const save = async (key) => {
         try {
           const row = await form.validateFields();
           const newData = [...roles];
           const index = newData.findIndex((item) => key === item.key);
-    
+          console.log(newData[index])
           if (index > -1) {
             const item = newData[index];
             newData.splice(index, 1, { ...item, ...row });
             setRoles({roles: newData, loading: false});
-            // need to add request to a new route for update role.
+            updateDB(item['key'], item)
+            // resetRoles()
             setEditingKey('');
           } else {
             newData.push(row);
@@ -146,12 +155,27 @@ const RolesTable = withUser(({user}) => {
         children,
         ...restProps
       }) => {
-        const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
+        const inputNode = inputType === 'number' ? <InputNumber onStep={(value) => {
+            const updatedRole = record
+            console.log('Title: ' + updatedRole[dataIndex])
+            const newRoles = roles.map(role=> role === record ? updatedRole: role)
+            setRoles({'roles': newRoles, 'loading': false})
+          }} /> : <Input />;
         return (
           <td {...restProps}>
             {editing ? (
               <Form.Item
                 name={dataIndex}
+                onChange={(event) => {
+                    const updatedRole = record
+                    updatedRole[dataIndex] = dataIndex === 'Duration' ? parseInt(event.target.value) : event.target.value
+                    console.log("update: " + updatedRole)
+                    const newRoles = roles.map(role=> role === record ? updatedRole: role)
+                    // setRoles({'roles': newRoles, 'loading': false})
+                    // console.log('newRoles: ' + newRoles);
+                    // console.log('record: ' + record['Title'])
+                  }}
+                
                 style={{
                   margin: 0,
                 }}
