@@ -109,10 +109,6 @@ const Home = withUser(({user}) => {
         resetEmployeeList()
     }, [])
 
-    // useEffect(() => {
-    //     sendForCalculation()
-    //  }, [])
-
     useEffect(() => {
         resetRolesList()
      }, [])
@@ -138,8 +134,6 @@ const Home = withUser(({user}) => {
                 <SmileTwoTone style={{fontSize: '80px', color: '#08c'}} />
                 <h2 style={{color: "blue", marginLeft: "-1rem"}}>Employee status</h2>
                 <List
-                    // header={<h2 style={{color: "blue", marginLeft: "-1rem", marginTop: '-1rem'}}>Optional future roles</h2>}
-                    // footer={<div>Footer</div>}
                     bordered
                     loading={loadingEmployee}
                     style={{height: '20%', overflow: "auto", height: "300px"}}

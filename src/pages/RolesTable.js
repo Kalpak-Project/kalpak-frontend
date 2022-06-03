@@ -26,6 +26,7 @@ const RolesTable = withUser(({user}) => {
             title: 'Duration (in days)',
             dataIndex: 'Duration',
             width: '20%',
+            inputRender: (value, onChange)=><InputNumber min={1} max={1000} defaultValue={365} onChange={onChange} />,
             editable: true,
         },
         {
@@ -156,24 +157,20 @@ const RolesTable = withUser(({user}) => {
         ...restProps
       }) => {
         const inputNode = inputType === 'number' ? <InputNumber onStep={(value) => {
-            const updatedRole = record
-            console.log('Title: ' + updatedRole[dataIndex])
-            const newRoles = roles.map(role=> role === record ? updatedRole: role)
-            setRoles({'roles': newRoles, 'loading': false})
-          }} /> : <Input />;
+            record[dataIndex] = dataIndex === 'Duration' ? parseInt(value) : value
+            console.log("update111: " + record)
+            const newRoles = roles.map(role=> role === record ? record: role)
+          }}
+          /> : <Input />;
         return (
           <td {...restProps}>
             {editing ? (
               <Form.Item
                 name={dataIndex}
                 onChange={(event) => {
-                    const updatedRole = record
-                    updatedRole[dataIndex] = dataIndex === 'Duration' ? parseInt(event.target.value) : event.target.value
-                    console.log("update: " + updatedRole)
-                    const newRoles = roles.map(role=> role === record ? updatedRole: role)
-                    // setRoles({'roles': newRoles, 'loading': false})
-                    // console.log('newRoles: ' + newRoles);
-                    // console.log('record: ' + record['Title'])
+                    record[dataIndex] = dataIndex === 'Duration' ? parseInt(event.target.value) : event.target.value
+                    console.log("update: " + record)
+                    const newRoles = roles.map(role=> role === record ? record: role)
                   }}
                 
                 style={{
@@ -194,27 +191,16 @@ const RolesTable = withUser(({user}) => {
           </td>
         );
       };      
-
-    const columnsTitles = columns.map(elem => ({title:elem.dataIndex, inputRender:elem.inputRender}))
-
-    // const columnsForTable = columns1.push({
-    //     title: '',
-    //     dataIndex: 'update',
-    //     width: '10%',
-    //     render: <Button type="primary" shape='round'  >
-    //                 update
-    //             </Button>})
-
-    // return (
-    //     user === null ? <Navigate to='/login' /> :
-    //     !user['isAdmin'] ? <Navigate to='/' /> :
-    //     <div>
-    //         <ModalAdd onChange={resetRoles} table={"roles"} fields={columnsTitles} button='Add New Role' />
-    //         <Table loading={loading} dataSource={roles} columns={columnsForTable} pagination={{ pageSize: 40 }} scroll={{ y: 320 }} />
-    //     </div>
-    // )
+    
+    const columnsForModal = columns
+    columnsForModal.pop()
+    const columnsTitles = columnsForModal.map(elem => ({title:elem.dataIndex, inputRender:elem.inputRender}))
 
     return (
+        user === null ? <Navigate to='/login' /> :
+            !user['isAdmin'] ? <Navigate to='/' /> :
+            <div>
+                <ModalAdd onChange={resetRoles} table={"roles"} fields={columnsTitles} button='Add New Role' />
         <Form form={form} component={false}>
           <Table
             components={{
@@ -232,6 +218,7 @@ const RolesTable = withUser(({user}) => {
             }}
           />
         </Form>
+        </div>
       );
 })
 

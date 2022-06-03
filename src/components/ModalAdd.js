@@ -43,7 +43,7 @@ const ModalAdd = ({onChange, table, fields, button}) => {
             onChange()
             console.log(res)
         }).catch(err => {console.log(err)})
-    }, [onChange, data,fields])
+    }, [onChange, data, fields])
   
     const handleCancel = () => {
       console.log('Clicked cancel button');
@@ -75,8 +75,8 @@ const ModalAdd = ({onChange, table, fields, button}) => {
           confirmLoading={confirmLoading}
           onCancel={handleCancel}
           width={540}
-          bodyStyle={{height:370}}
           okButtonProps={{disabled: okBtnDisable}}
+          centered
         >
         <Form    
         {...formItemLayout}
