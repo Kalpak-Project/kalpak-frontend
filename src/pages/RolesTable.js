@@ -26,7 +26,7 @@ const RolesTable = withUser(({user}) => {
             title: 'Duration (in days)',
             dataIndex: 'Duration',
             width: '20%',
-            inputRender: (value, onChange)=><InputNumber min={1} max={1000} defaultValue={365} onChange={onChange} />,
+            inputRender: (value, onChange)=><InputNumber min={1} max={1500} defaultValue={365} onChange={onChange} />,
             editable: true,
         },
         {

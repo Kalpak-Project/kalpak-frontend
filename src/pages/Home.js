@@ -3,8 +3,7 @@ import axios from 'axios';
 import { Button, Row, Col, List, Typography, Timeline, Popover, Card } from 'antd';
 import { withUser } from '../components/userContext';
 import { Navigate } from 'react-router-dom';
-import { UpOutlined, DownOutlined, SmileTwoTone, FrownFilled } from '@ant-design/icons';
-import { Role } from './RolesTable';
+import { UpOutlined, DownOutlined, SmileTwoTone, FrownFilled, FilePdfOutlined } from '@ant-design/icons';
 
 const Home = withUser(({user}) => {
 
@@ -96,6 +95,16 @@ const Home = withUser(({user}) => {
             )
         }, [])
 
+    const getFileOfRole = (manningId => {
+            axios.get(`/api/getFileOfRole/${manningId}`).then(
+                res => {
+                    console.log(res.data)
+                }
+            ).catch(
+                err => console.log(manningId)
+            )
+        })
+
     const changeRolesOrder = ((changedIndex, action) => {
         var orderedList = Array.from(rolesList);
         var currentRole = orderedList[changedIndex];
@@ -130,6 +139,7 @@ const Home = withUser(({user}) => {
                 delete role['Role ID'];
                 delete role['User ID'];
                 delete role['Title'];
+                delete role['file_path']
             }
             return rolesList
         }
@@ -218,14 +228,14 @@ const Home = withUser(({user}) => {
             }
             <Col style={{marginLeft: '1rem', borderRadius: '10px', border: '1px solid grey', padding: '1rem', backgroundColor: 'white'}} span={11}>
                 <Timeline>
-                    {rolesHistory.map(({Title}, i)=>
+                    {rolesHistory.map(({Title, _id}, i)=>
                     <Timeline.Item key={i}
                     dot={
                         <Popover 
                             content={
                                 <Card
                                 title={Title}
-                                extra={<a href="#">More</a>}
+                                extra={<FilePdfOutlined style={{fontSize: '20px'}} onClick={()=>getFileOfRole(_id)} />}
                                 style={{
                                 width: 300,
                                 }}
