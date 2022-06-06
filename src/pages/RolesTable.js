@@ -212,7 +212,7 @@ const RolesTable = withUser(({user}) => {
             dataSource={roles}
             columns={mergedColumns}
             rowClassName="editable-row"
-            scroll={{y: 350}}
+            scroll={{y: 275}}
             pagination={{
               onChange: cancel,
             }}

@@ -74,7 +74,7 @@ const ManningTable = withUser(({user}) => {
         !user['isAdmin'] ? <Navigate to='/' /> : 
         <div>
             <ModalAdd onChange={resetManning} table={"manning"} fields={coolmnsTitles} button='Add New Manning' />
-            <Table loading={loading} dataSource={manning.sort((a, b) => a['Job end date'] > b['Job end date'] ? -1:1)} columns={columns} pagination={{ pageSize: 40 }} scroll={{ y: 320 }} />
+            <Table loading={loading} dataSource={manning.sort((a, b) => a['Job end date'] > b['Job end date'] ? -1:1)} columns={columns} pagination={{ pageSize: 40 }} scroll={{ y: 275 }} />
         </div>
     )
 })

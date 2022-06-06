@@ -103,7 +103,7 @@ const LocationHolder = () => {
     }
     </userData.Consumer>
   </Header>
-  <Content className="site-layout" style={{ padding: '0 50px' , marginTop: '5rem' }}>
+  <Content className="site-layout" style={{ padding: '0 50px' , marginTop: '4rem' }}>
     
     <div className="site-layout-background" style={{ padding: 24, minHeight: 430 }}>
     

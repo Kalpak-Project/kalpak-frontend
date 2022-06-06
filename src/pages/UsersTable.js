@@ -66,7 +66,7 @@ const UsersTable = ({user}) => {
         !user['isAdmin'] ? <Navigate to='/' /> : 
         <div>
             <ModalAdd onChange={resetUsers} table={"users"} fields={cols} button='Add New User' />
-            <Table loading={loading} dataSource={users} columns={columns} pagination={{ pageSize: 40 }} scroll={{ y: 320 }} />
+            <Table loading={loading} dataSource={users} columns={columns} pagination={{ pageSize: 40 }} scroll={{ y: 275 }} />
         </div>
     )
 }
