@@ -23,7 +23,6 @@ const App = () => {
     <Router>
       <LocationHolder />
   </Router>
-
   )
 }
 
@@ -35,7 +34,7 @@ const LocationHolder = () => {
   return <UserContext>
   {({user}) => !user ? <LogInPage /> : 
    <Layout>
-   <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
+   <Header style={{ position: 'fixed', zIndex: 1, width: '100%'}}>
     <userData.Consumer>
       {({logoutUser}) => 
     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={location.pathname}>

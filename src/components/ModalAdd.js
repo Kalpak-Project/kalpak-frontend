@@ -43,7 +43,7 @@ const ModalAdd = ({onChange, table, fields, button}) => {
             onChange()
             console.log(res)
         }).catch(err => {console.log(err)})
-    }, [onChange, data,fields])
+    }, [onChange, data, fields])
   
     const handleCancel = () => {
       console.log('Clicked cancel button');
@@ -65,19 +65,18 @@ const ModalAdd = ({onChange, table, fields, button}) => {
   
     return (
       <>
-        <Button type="primary" onClick={showModal} >
-            {button}
+        <Button type="primary" shape='round' onClick={showModal} >
+          {button}
         </Button>
         <Modal
-         
           title={button}
           visible={visible}
           onOk={handleOk}
           confirmLoading={confirmLoading}
           onCancel={handleCancel}
           width={540}
-          bodyStyle={{height:370}}
           okButtonProps={{disabled: okBtnDisable}}
+          centered
         >
         <Form    
         {...formItemLayout}

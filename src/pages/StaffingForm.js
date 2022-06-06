@@ -2,9 +2,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { withUser } from '../components/userContext';
 import { Navigate } from 'react-router-dom';
-import { Steps, Button, message, Table, Radio, Divider, Spin} from 'antd';
-import { SmileTwoTone, FrownFilled } from '@ant-design/icons';
-import { Role } from './RolesTable';
+import { Steps, Button, message, Table, Radio, Divider, Spin, Tooltip} from 'antd';
+import { IdcardOutlined } from '@ant-design/icons';
+
 
 const StaffingForm = withUser(({user}) => {
      
@@ -72,11 +72,11 @@ const StaffingForm = withUser(({user}) => {
     <Divider />
     
     <Table 
-    scroll={{ y: 170 }}
+    scroll={{ y: 240 }}
       rowSelection={  
-        {
+        {   
         onChange: (selectedRowKeys, selectedRows) => {
-            setSelectedUser((pv)=> pv.map((ps,i)=>i === current? selectedRowKeys: ps))
+            setSelectedUser((pv)=> pv.map((ps,i)=>i === current ? selectedRowKeys: ps))
             console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
             }, 
         selectedRowKeys: selectedUser[current],
@@ -99,13 +99,18 @@ const StaffingForm = withUser(({user}) => {
             user === null ? <Navigate to='/login' /> :
             !user['isAdmin'] ? <Navigate to='/' /> : 
             
-            <>
-            <Steps style={{height: '1%' , margin: '-10px'}} current={current}>
+        <div style={{marginTop: '2rem'}}>
+            <Steps style={{marginTop: '-3rem'}} current={current}>
                 {staffingForm.map(({Role}, i) =>
-                <Step key={i} title={Role.Title} />
+                <Step key={i} title={Role.Title} 
+                icon={<Tooltip placement='bottom' color={'blue'} title={Role.Title} trigger={'hover'}>
+                    {/* <span>{i}</span> */}
+                    <IdcardOutlined />
+                </Tooltip>}
+                />
                 )}
             </Steps>
-            <div className="steps-content">{content}</div>
+            <div style={{marginTop: '-2rem'}} className="steps-content">{content}</div>
 
             <div  className="steps-action">
             {current < staffingForm.length - 1 && 
@@ -114,7 +119,6 @@ const StaffingForm = withUser(({user}) => {
                 </Button>
                 }
 
-{/* res.data.staffingForm.map(()=>[]) */}
             {current === staffingForm.length - 1 && 
                 <Button style={{marginBottom: '4%' ,marginInline: '1%'}} type="primary" onClick={() => {
                     axios.post('/api/selectedUserRole', {Roles: staffingForm.map(({Role})=> Role["_id"]) ,Users: selectedUser}).then(
@@ -133,7 +137,8 @@ const StaffingForm = withUser(({user}) => {
                 </Button>
                 }
             </div>
-            </>
+        </div>
+
         );
 
 })
