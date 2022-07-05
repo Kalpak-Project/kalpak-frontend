@@ -99,8 +99,8 @@ const StaffingForm = withUser(({user}) => {
             user === null ? <Navigate to='/login' /> :
             !user['isAdmin'] ? <Navigate to='/' /> : 
             
-        <div style={{marginTop: '2rem'}}>
-            <Steps style={{marginTop: '-3rem'}} current={current}>
+        <div style={{marginTop: '4rem'}}>
+            <Steps style={{marginTop: '-4rem'}} current={current}>
                 {staffingForm.map(({Role}, i) =>
                 <Step key={i} title={Role.Title} 
                 icon={<Tooltip placement='bottom' color={'blue'} title={Role.Title} trigger={'hover'}>
