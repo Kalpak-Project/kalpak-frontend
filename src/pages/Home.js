@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Button, Row, Col, List, Typography, Timeline, Popover, Card } from 'antd';
 import { withUser } from '../components/userContext';
@@ -25,9 +25,7 @@ const Home = withUser(({user}) => {
             ).catch(err => {
                 console.log(err)
             })
-        },
-        [],
-    )
+        }, [])
 
     const resetEmployeeList = useCallback(
         () => {
@@ -40,8 +38,7 @@ const Home = withUser(({user}) => {
             ).catch(err => {
                 console.log(err)
             })
-        }, [],
-    )
+        }, [])
 
     const sendForCalculation = useCallback(
         () => {
@@ -51,8 +48,7 @@ const Home = withUser(({user}) => {
                     console.log('orederedList',  rolesList)
                     // need to print to user that the order updated. 
             }).catch(err => {console.log(err)})
-        }, [rolesList],
-    )
+        }, [rolesList])
 
     const resetRolesList = useCallback(
         () => {
@@ -64,9 +60,7 @@ const Home = withUser(({user}) => {
                 ).catch(err => {
                     console.log(err)
                 })
-        },
-        [],
-    )
+        }, [])
 
     const resetJobEndDate = useCallback(
         () => {
@@ -81,9 +75,7 @@ const Home = withUser(({user}) => {
             ).catch(err => {
                 console.log(err)
             })
-        },
-        [],
-    )
+        }, [])
 
     const resetRolesHistory = useCallback(
         () => {
@@ -145,31 +137,31 @@ const Home = withUser(({user}) => {
         }
 
     const rolesHistoryContent = rolesHistoryList().map(role=>
-    <div>
-        {Object.keys(role).map((key)=>
-        <p><b>{key  + ': '}</b>{role[key]}</p>)}
-    </div>)
+        <div>
+            {Object.keys(role).map((key)=>
+            <p><b>{key  + ': '}</b>{role[key]}</p>)}
+        </div>)
 
 
     useEffect(() => {
        resetSmile()
-    }, [])
+        }, [])
 
     useEffect(() => {
         resetEmployeeList()
-    }, [])
+        }, [])
 
     useEffect(() => {
         resetRolesList()
-     }, [])
+        }, [])
 
      useEffect(() => {
         resetJobEndDate()
-     }, [])
+        }, [])
 
      useEffect(() => {
         resetRolesHistory()
-     }, [])
+        }, [])
 
     return (
         user === null ? <Navigate to='/login' /> : 
@@ -245,14 +237,11 @@ const Home = withUser(({user}) => {
                             } trigger={'hover'}
                                 placement="left">
                             O
-                        </Popover>
-                    
-                   
+                        </Popover>                 
                     }
                     color="green">{Title}
                 </Timeline.Item>)}
-                    
-                    
+
                 </Timeline>
             </Col>
             </Row>

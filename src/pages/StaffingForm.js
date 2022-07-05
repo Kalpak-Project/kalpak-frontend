@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { withUser } from '../components/userContext';
 import { Navigate } from 'react-router-dom';
-import { Steps, Button, message, Table, Radio, Divider, Spin, Tooltip} from 'antd';
+import { Steps, Button, message, Table, Radio, Divider, Spin, Popover} from 'antd';
 import { IdcardOutlined } from '@ant-design/icons';
 
 
@@ -11,6 +11,7 @@ const StaffingForm = withUser(({user}) => {
     const [{staffingForm, loading} ,setStaffingForm] = useState({staffingForm:[], loading: true});
     const [selectedUser , setSelectedUser] = useState();
     const [current, setCurrent] = useState(0);
+    const [csp, setCsp] = useState([]);
 
     const next = () => {
         setCurrent(current + 1);
@@ -24,16 +25,15 @@ const StaffingForm = withUser(({user}) => {
         () => {
             axios.get('/api/staffingForm').then(
                 res => {
-                    console.log(res.data.staffingForm)
+                    console.log(res.data.cspRes)
+                    setCsp(res.data.cspRes)
                     setSelectedUser(res.data.staffingForm.map(()=>[]))
                     setStaffingForm({staffingForm: res.data.staffingForm, loading: false })
                 }
             ).catch(err => {
                 console.log(err)
             })
-        },
-        [],
-    )
+        }, [])
     
 
     useEffect(() => {
@@ -53,8 +53,7 @@ const StaffingForm = withUser(({user}) => {
         {
           title: 'Personal ID',
           dataIndex: 'Personal ID',
-        },
-      ];
+        }];
 
 
     const { Step } = Steps;
@@ -103,10 +102,10 @@ const StaffingForm = withUser(({user}) => {
             <Steps style={{marginTop: '-4rem'}} current={current}>
                 {staffingForm.map(({Role}, i) =>
                 <Step key={i} title={Role.Title} 
-                icon={<Tooltip placement='bottom' color={'blue'} title={Role.Title} trigger={'hover'}>
-                    {/* <span>{i}</span> */}
+                icon={<Popover placement="bottom" title={Role.Title} content={csp[Role._id]} trigger="hover">
                     <IdcardOutlined />
-                </Tooltip>}
+              </Popover>}
+
                 />
                 )}
             </Steps>

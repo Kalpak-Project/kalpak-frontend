@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { Table, Select, Spin, Input, Form, Typography,Popconfirm, InputNumber, Button } from 'antd';
+import { Table, Select, Spin, Input, Form, Typography,Popconfirm, InputNumber } from 'antd';
 import ModalAdd from '../components/ModalAdd';
 import { withUser } from '../components/userContext';
 import { Navigate } from 'react-router-dom';
-const {Option}=Select;
+const { Option } = Select;
 
 const RolesTable = withUser(({user}) => {
 
@@ -97,7 +97,6 @@ const RolesTable = withUser(({user}) => {
             newData.splice(index, 1, { ...item, ...row });
             setRoles({roles: newData, loading: false});
             updateDB(item['key'], item)
-            // resetRoles()
             setEditingKey('');
           } else {
             newData.push(row);
@@ -125,7 +124,6 @@ const RolesTable = withUser(({user}) => {
         };
       });
     
-
     const resetRoles = useCallback(
         () => {
             axios.get('/api/roles').then(
@@ -136,14 +134,12 @@ const RolesTable = withUser(({user}) => {
             ).catch(err => {
                 console.log(err)
             })
-        },
-        [],
-    )
+        }, [])
 
 
     useEffect(() => {
-       resetRoles()
-    }, [])
+      resetRoles()
+      }, [])
 
 
     const EditableCell = ({

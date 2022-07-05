@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Table , DatePicker } from 'antd';
 import ModalAdd from '../components/ModalAdd';
@@ -23,9 +23,7 @@ const ManningTable = withUser(({user}) => {
             ).catch(err => {
                 console.log(err)
             })
-        },
-        [],
-    )
+        }, [])
 
 
     useEffect(() => {
@@ -62,18 +60,15 @@ const ManningTable = withUser(({user}) => {
             width: '25%',
             render: value => <Moment date={value} format = {"DD-MM-yyyy"}/>,
             inputRender: (value, onChange)=><DatePicker key={1} date={value} onChange={(newValue)=>onChange(newValue.toISOString())}/>,
-        }
+        }]
 
-    ]
+    const columnsTitles = columns.map(elem => ({title:elem.title,inputRender:elem.inputRender}))
 
-    const coolmnsTitles = columns.map(elem => ({title:elem.title,inputRender:elem.inputRender}))
-
-   
     return (
         user === null ? <Navigate to='/login' /> :
         !user['isAdmin'] ? <Navigate to='/' /> : 
         <div>
-            <ModalAdd onChange={resetManning} table={"manning"} fields={coolmnsTitles} button='Add New Manning' />
+            <ModalAdd onChange={resetManning} table={"manning"} fields={columnsTitles} button='Add New Manning' />
             <Table loading={loading} dataSource={manning.sort((a, b) => a['Job end date'] > b['Job end date'] ? -1:1)} columns={columns} pagination={{ pageSize: 40 }} scroll={{ y: 275 }} />
         </div>
     )

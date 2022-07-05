@@ -35,8 +35,9 @@ const ModalAdd = ({onChange, table, fields, button}) => {
       }, 500);
     };
 
+    
     const addToDB = useCallback(() => {
-        const newElement = fields.map(({title},i) => ({key: title, value: data[i]}))
+        const newElement = fields.map(({title},i) => ({key: title, value: data[i]}))    
         console.log("new element: ")
         console.log(newElement)
         axios.post('/api/'+table, newElement).then(res => {
