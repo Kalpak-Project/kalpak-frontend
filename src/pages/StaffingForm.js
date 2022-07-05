@@ -71,7 +71,7 @@ const StaffingForm = withUser(({user}) => {
     <Divider />
     
     <Table 
-    scroll={{ y: 240 }}
+    scroll={{ y: 225 }}
       rowSelection={  
         {   
         onChange: (selectedRowKeys, selectedRows) => {
