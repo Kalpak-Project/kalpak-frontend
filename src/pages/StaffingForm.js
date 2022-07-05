@@ -102,7 +102,7 @@ const StaffingForm = withUser(({user}) => {
             <Steps style={{marginTop: '-4rem'}} current={current}>
                 {staffingForm.map(({Role}, i) =>
                 <Step key={i} title={Role.Title} 
-                icon={<Popover placement="bottom" title={Role.Title} content={csp[Role._id]} trigger="hover">
+                icon={<Popover placement="bottom" title={Role.Title} content={'Suggestion: ' + csp[Role._id]} trigger="hover">
                     <IdcardOutlined />
               </Popover>}
 
