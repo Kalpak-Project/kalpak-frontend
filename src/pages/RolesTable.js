@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { Table, Select, Spin, Input, Form, Typography,Popconfirm, InputNumber } from 'antd';
+import { Table, List, Select, Spin, Input, Form, Typography,Popconfirm, InputNumber } from 'antd';
 import ModalAdd from '../components/ModalAdd';
 import { withUser } from '../components/userContext';
 import { Navigate } from 'react-router-dom';
@@ -17,28 +17,41 @@ const RolesTable = withUser(({user}) => {
 
     const columns = [
         {
-            title: 'Title',
-            dataIndex: 'Title',
-            width: '30%',
-            editable: true,
+          title: 'Title',
+          dataIndex: 'Title',
+          width: '20%',
+          editable: true,
         },
         {
-            title: 'Duration (in days)',
-            dataIndex: 'Duration',
-            width: '20%',
-            inputRender: (value, onChange)=><InputNumber min={1} max={1500} defaultValue={365} onChange={onChange} />,
-            editable: true,
+          title: 'Duration (in days)',
+          dataIndex: 'Duration',
+          width: '20%',
+          inputRender: (value, onChange)=><InputNumber min={1} max={1500} defaultValue={365} onChange={onChange} />,
+          editable: true,
         },
         {
-            title: 'Description',
-            dataIndex: 'Description',
-            width: '30%',
-            editable: true,
+          title: 'Description',
+          dataIndex: 'Description',
+          width: '20%',
+          editable: true,
+        },
+        {
+          title: 'Requirement',
+          dataIndex: 'Constraints',
+          width: '20%',
+          render: (record, index) => record !== null ?
+            <List
+            size="small"
+            // bordered
+            dataSource={record}
+            renderItem={(item) => <List.Item>{item}</List.Item>}
+          /> : record,
+          editable: true,
         },
         {
             title: 'operation',
             dataIndex: 'operation',
-            width: '15%',
+            width: '10%',
             render: (_, record) => {
               const editable = isEditing(record);
               return editable ? (
@@ -128,7 +141,7 @@ const RolesTable = withUser(({user}) => {
         () => {
             axios.get('/api/roles').then(
                 res => {
-                    console.log("update data")
+                    console.log("roles: ", res.data.roles)
                     setRoles({roles: res.data.roles, loading: false})
                 }
             ).catch(err => {

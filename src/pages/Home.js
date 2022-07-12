@@ -55,7 +55,7 @@ const Home = withUser(({user}) => {
                 axios.get(`/api/optional_roles/${user.id}`).then(
                     res => {
                         setRolesList({rolesList: res.data.dataRoles, loadingRoles: false})
-                        console.log(rolesList)
+                        console.log("roles: ", rolesList)
                     }
                 ).catch(err => {
                     console.log(err)
@@ -204,6 +204,7 @@ const Home = withUser(({user}) => {
                         loading={loadingRoles}
                         style={{overflow: "auto", height: "280px", marginTop: '1rem'}}
                         dataSource={rolesList.sort((a, b) => a['index'] > b['index'] ? 1:-1)}
+                        // TODO fix some problem of the indexes in the list.
                         renderItem={(item) => (
                             <List.Item>
                             <Title level={4}>{item["Title"]}</Title>
