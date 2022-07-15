@@ -25,8 +25,15 @@ const StaffingForm = withUser(({user}) => {
         () => {
             axios.get('/api/staffingForm').then(
                 res => {
-                    console.log(res.data.cspRes)
-                    setCsp(res.data.cspRes)
+                    var csp = res.data.cspRes
+                    if (csp !== false){
+                        console.log("csp: ", res.data.cspRes)
+                        setCsp(res.data.cspRes)
+                    } else{
+                        console.log("warning")
+                        setCsp(false)
+                        message.warning("In the existing constraint data - no full placement is possible", 10)
+                    }
                     setSelectedUser(res.data.staffingForm.map(()=>[]))
                     setStaffingForm({staffingForm: res.data.staffingForm, loading: false })
                 }
@@ -34,8 +41,8 @@ const StaffingForm = withUser(({user}) => {
                 console.log(err)
             })
         }, [])
-    
 
+    
     useEffect(() => {
         resetStaffingForm()
     }, [])
@@ -99,6 +106,8 @@ const StaffingForm = withUser(({user}) => {
             !user['isAdmin'] ? <Navigate to='/' /> : 
             
         <div style={{marginTop: '4rem'}}>
+            {csp ? 
+            
             <Steps style={{marginTop: '-4rem'}} current={current}>
                 {staffingForm.map(({Role}, i) =>
                 <Step key={i} title={Role.Title} 
@@ -108,7 +117,18 @@ const StaffingForm = withUser(({user}) => {
 
                 />
                 )}
-            </Steps>
+            </Steps> :
+            <Steps style={{marginTop: '-4rem'}} current={current}>
+                {staffingForm.map(({Role}, i) =>
+                <Step key={i} title={Role.Title} 
+                icon={<Popover placement="bottom" title={Role.Title} content={'No Suggestion Available'} trigger="hover">
+                    <IdcardOutlined />
+              </Popover>}
+
+                />
+                )}
+            </Steps>}
+
             <div style={{marginTop: '-2rem'}} className="steps-content">{content}</div>
 
             <div  className="steps-action">

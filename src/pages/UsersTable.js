@@ -33,21 +33,25 @@ const UsersTable = ({user}) => {
             title: 'Family Name',
             dataIndex: 'Family Name',
             width: '20%',
+            required: true
         },
         {
             title: 'Private Name',
             dataIndex: 'Private Name',
             width: '20%',
+            required: true
         },
         {
             title: 'user_name',
             dataIndex: 'user_name',
             width: '20%',
+            required: true
         },
         {
             title: 'Personal ID',
             dataIndex: 'Personal ID',
             width: '20%',
+            required: true
         },
         {
             title: 'Employer',
@@ -55,9 +59,10 @@ const UsersTable = ({user}) => {
             width: '20%',
             render: (text, record) => <User value={text}/>,
             inputRender: (value, onChange)=><UserSelect key={1} value={value} onChange={onChange}/>,
+            required: true
         }]
 
-    const cols = columns.map(elem => ({title:elem.title, inputRender:elem.inputRender}))
+    const cols = columns.map(elem => ({title:elem.title, inputRender:elem.inputRender, required: elem.required}))
 
     return (
         user === null ? <Navigate to='/login' /> :
