@@ -188,7 +188,7 @@ const RolesTable = withUser(({user}) => {
           <ConSelect key={1} value={record} onChange={(value) => {
             console.log("value: ")
             console.log(value)
-            // record[dataIndex] = value.role_title
+            record[dataIndex] = value.role_title
             console.log("update: ")
             console.log(record)
             const newRoles = roles.map(role => role === record ? record : role)

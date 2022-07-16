@@ -36,6 +36,8 @@ const StaffingForm = withUser(({user}) => {
                     }
                     setSelectedUser(res.data.staffingForm.map(()=>[]))
                     setStaffingForm({staffingForm: res.data.staffingForm, loading: false })
+                    console.log('roles and users: ')
+                    console.log(staffingForm)
                 }
             ).catch(err => {
                 console.log(err)
