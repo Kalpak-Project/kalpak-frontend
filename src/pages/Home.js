@@ -55,7 +55,8 @@ const Home = withUser(({user}) => {
                 axios.get(`/api/optional_roles/${user.id}`).then(
                     res => {
                         setRolesList({rolesList: res.data.dataRoles, loadingRoles: false})
-                        console.log("roles: ", rolesList)
+                        console.log("roles: ")
+                        console.log(rolesList)
                     }
                 ).catch(err => {
                     console.log(err)
@@ -162,6 +163,7 @@ const Home = withUser(({user}) => {
      useEffect(() => {
         resetRolesHistory()
         }, [])
+
 
     return (
         user === null ? <Navigate to='/login' /> : 

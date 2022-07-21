@@ -26,7 +26,7 @@ const StaffingForm = withUser(({user}) => {
             axios.get('/api/staffingForm').then(
                 res => {
                     var csp = res.data.cspRes
-                    if (csp !== false){
+                    if (csp !== -1){
                         console.log("csp: ", res.data.cspRes)
                         setCsp(res.data.cspRes)
                     } else{
