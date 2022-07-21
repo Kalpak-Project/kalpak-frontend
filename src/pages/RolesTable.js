@@ -116,7 +116,7 @@ const RolesTable = withUser(({user}) => {
             const item = row;
             item['key'] = key;
             if (item.Constraints[0] === undefined){
-              item.Constraints.splice(1)
+              item.Constraints.shift()
             }
             newData.splice(index, 1, { ...item, ...row });
             console.log("after fix: ", newData)
