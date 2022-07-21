@@ -116,7 +116,6 @@ const StaffingForm = withUser(({user}) => {
                 icon={<Popover placement="bottom" title={Role.Title} content={'Suggestion: ' + csp[Role._id]} trigger="hover">
                     <IdcardOutlined />
               </Popover>}
-
                 />
                 )}
             </Steps> :

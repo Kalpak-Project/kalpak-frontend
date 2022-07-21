@@ -166,7 +166,6 @@ const RolesTable = withUser(({user}) => {
       resetRoles()
       }, [])
 
-
     const EditableCell = ({
         editing,
         dataIndex,
