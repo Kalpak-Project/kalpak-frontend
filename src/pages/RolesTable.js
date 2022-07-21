@@ -302,7 +302,7 @@ export const ConSelect = ({value,onChange})=> {
       width: '100%',
     }}
     placeholder="Please select"
-    defaultValue={[]}
+    defaultValue={''}
     value={value}
     onChange={onChange}
   >
