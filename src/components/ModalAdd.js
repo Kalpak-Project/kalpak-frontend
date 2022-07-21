@@ -97,6 +97,7 @@ const ModalAdd = ({onChange, table, fields, button}) => {
         
         {fields.map(({title,inputRender,required},i) =>
                 <Form.Item label={title}
+                  required={required}
                   rules={[
                     {
                       required: required,

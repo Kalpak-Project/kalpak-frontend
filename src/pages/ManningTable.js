@@ -39,6 +39,7 @@ const ManningTable = withUser(({user}) => {
             width: '25%',
             render: (text, record) => <User value={text}/>,
             inputRender: (value, onChange)=><UserSelect key={1} value={value} onChange={onChange}/>,
+            required: true
         },
         {
             title: 'Role ID',
@@ -46,6 +47,7 @@ const ManningTable = withUser(({user}) => {
             width: '25%',
             render: (text, record) => <Role value={text}/>,
             inputRender: (value, onChange) =><RoleSelect key={1} value={value} onChange={onChange}/>,
+            required: true
         },
         {
             title: 'Date of staffing',
@@ -53,6 +55,7 @@ const ManningTable = withUser(({user}) => {
             width: '25%',
             render: value => <Moment date={value} format = {"DD-MM-yyyy"}/>, 
             inputRender: (value, onChange)=><DatePicker key={1} date={value} onChange={(newValue)=>onChange(newValue.toISOString())}/>,
+            required: true
         },
         {
             title: 'Job end date',
@@ -60,9 +63,10 @@ const ManningTable = withUser(({user}) => {
             width: '25%',
             render: value => <Moment date={value} format = {"DD-MM-yyyy"}/>,
             inputRender: (value, onChange)=><DatePicker key={1} date={value} onChange={(newValue)=>onChange(newValue.toISOString())}/>,
+            required: true
         }]
 
-    const columnsTitles = columns.map(elem => ({title:elem.title,inputRender:elem.inputRender}))
+    const columnsTitles = columns.map(elem => ({title:elem.title,inputRender:elem.inputRender, required:elem.required}))
 
     return (
         user === null ? <Navigate to='/login' /> :

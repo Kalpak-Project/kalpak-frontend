@@ -241,6 +241,7 @@ const RolesTable = withUser(({user}) => {
             bordered
             dataSource={roles}
             columns={mergedColumns}
+            loading={loading}
             rowClassName="editable-row"
             scroll={{y: 275}}
             pagination={{
@@ -302,7 +303,7 @@ export const ConSelect = ({value,onChange})=> {
       width: '100%',
     }}
     placeholder="Please select"
-    defaultValue={''}
+    defaultValue={[]}
     value={value}
     onChange={onChange}
   >
