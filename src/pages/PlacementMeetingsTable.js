@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Table } from 'antd';
 import { withUser } from '../components/userContext';
 import { Navigate } from 'react-router-dom';
-import { Role, RoleSelect } from './RolesTable';
+import { Role } from './RolesTable';
 import { SmileTwoTone , FrownFilled} from '@ant-design/icons';
-
-
 
 
 const PlacementMeetingsTable = withUser(({user}) => {
@@ -23,14 +21,12 @@ const PlacementMeetingsTable = withUser(({user}) => {
             ).catch(err => {
                 console.log(err)
             })
-        },
-        [],
-    )
+        }, [])
 
 
     useEffect(() => {
-       resetPlacementMeetings()
-    }, [])
+        resetPlacementMeetings()
+        }, [])
 
     
     const columns = [      
@@ -45,12 +41,9 @@ const PlacementMeetingsTable = withUser(({user}) => {
             dataIndex: 'Smile',
             width: '25%',
             render: (text, record) => <Smile value={text}/>,
-        }
-    ]
+        }]
 
     const coolmnsTitles = columns.map(elem => ({title:elem.title}))
-
-    
 
     return (
         user === null ? <Navigate to='/login' /> :

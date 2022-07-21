@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { withUser } from '../components/userContext';
 import { Navigate } from 'react-router-dom';
-import { Steps, Button, message, Table, Radio, Divider, Spin, Tooltip} from 'antd';
+import { Steps, Button, message, Table, Radio, Divider, Spin, Popover} from 'antd';
 import { IdcardOutlined } from '@ant-design/icons';
 
 
@@ -11,6 +11,7 @@ const StaffingForm = withUser(({user}) => {
     const [{staffingForm, loading} ,setStaffingForm] = useState({staffingForm:[], loading: true});
     const [selectedUser , setSelectedUser] = useState();
     const [current, setCurrent] = useState(0);
+    const [csp, setCsp] = useState([]);
 
     const next = () => {
         setCurrent(current + 1);
@@ -24,18 +25,26 @@ const StaffingForm = withUser(({user}) => {
         () => {
             axios.get('/api/staffingForm').then(
                 res => {
-                    console.log(res.data.staffingForm)
+                    var csp = res.data.cspRes
+                    if (csp !== -1){
+                        console.log("csp: ", res.data.cspRes)
+                        setCsp(res.data.cspRes)
+                    } else{
+                        console.log("warning")
+                        setCsp(false)
+                        message.warning("In the existing constraint data - no full placement is possible", 10)
+                    }
                     setSelectedUser(res.data.staffingForm.map(()=>[]))
                     setStaffingForm({staffingForm: res.data.staffingForm, loading: false })
+                    console.log('roles and users: ')
+                    console.log(staffingForm)
                 }
             ).catch(err => {
                 console.log(err)
             })
-        },
-        [],
-    )
-    
+        }, [])
 
+    
     useEffect(() => {
         resetStaffingForm()
     }, [])
@@ -53,8 +62,7 @@ const StaffingForm = withUser(({user}) => {
         {
           title: 'Personal ID',
           dataIndex: 'Personal ID',
-        },
-      ];
+        }];
 
 
     const { Step } = Steps;
@@ -72,7 +80,7 @@ const StaffingForm = withUser(({user}) => {
     <Divider />
     
     <Table 
-    scroll={{ y: 240 }}
+    scroll={{ y: 225 }}
       rowSelection={  
         {   
         onChange: (selectedRowKeys, selectedRows) => {
@@ -99,17 +107,29 @@ const StaffingForm = withUser(({user}) => {
             user === null ? <Navigate to='/login' /> :
             !user['isAdmin'] ? <Navigate to='/' /> : 
             
-        <div style={{marginTop: '2rem'}}>
-            <Steps style={{marginTop: '-3rem'}} current={current}>
+        <div style={{marginTop: '4rem'}}>
+            {csp ? 
+            
+            <Steps style={{marginTop: '-4rem'}} current={current}>
                 {staffingForm.map(({Role}, i) =>
                 <Step key={i} title={Role.Title} 
-                icon={<Tooltip placement='bottom' color={'blue'} title={Role.Title} trigger={'hover'}>
-                    {/* <span>{i}</span> */}
+                icon={<Popover placement="bottom" title={Role.Title} content={'Suggestion: ' + csp[Role._id]} trigger="hover">
                     <IdcardOutlined />
-                </Tooltip>}
+              </Popover>}
                 />
                 )}
-            </Steps>
+            </Steps> :
+            <Steps style={{marginTop: '-4rem'}} current={current}>
+                {staffingForm.map(({Role}, i) =>
+                <Step key={i} title={Role.Title} 
+                icon={<Popover placement="bottom" title={Role.Title} content={'No Suggestion Available'} trigger="hover">
+                    <IdcardOutlined />
+              </Popover>}
+
+                />
+                )}
+            </Steps>}
+
             <div style={{marginTop: '-2rem'}} className="steps-content">{content}</div>
 
             <div  className="steps-action">

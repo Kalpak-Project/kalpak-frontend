@@ -15,18 +15,14 @@ export const UserContext = ({children}) => {
             }).catch((res) => {
                 setUser(null)
                 navigate('/login')
-            }
-                // document.location = '/login'
-            )
-        },
-        [setUser])
+            })
+        }, [setUser])
 
     const logoutUser = useCallback(() => {
         axios.post('/api/logout').then(
           res => {
             refreshUser()
             console.log(res)
-    
           }
         )
       }, [refreshUser])
@@ -44,7 +40,6 @@ export const UserContext = ({children}) => {
 export const withUser = (Component) => {
     return (props) => <userData.Consumer>
         {({user, refreshUser}) => 
-            //  component({user: user, refeshUser: refreshUser, ...props})
             <Component user={user} refreshUser={refreshUser} {...props} />
         }
     </userData.Consumer>

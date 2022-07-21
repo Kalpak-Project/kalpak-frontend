@@ -35,8 +35,11 @@ const ModalAdd = ({onChange, table, fields, button}) => {
       }, 500);
     };
 
+    
     const addToDB = useCallback(() => {
-        const newElement = fields.map(({title},i) => ({key: title, value: data[i]}))
+        var newElement = fields.map(({title},i) => (title === 'Constraints' ?
+        {key: title, value: (data[i] !== null) && (data[i][0] === undefined) ? data[i].slice(1) : data[i]} :
+        {key: title, value: data[i]}))    
         console.log("new element: ")
         console.log(newElement)
         axios.post('/api/'+table, newElement).then(res => {
@@ -53,11 +56,20 @@ const ModalAdd = ({onChange, table, fields, button}) => {
 
 
     useEffect(() => {
-      setOkBtnDisable(data.find(value => !value) !== undefined)
+      console.log("data: ", data)
+      if (table != "roles"){
+        setOkBtnDisable(data.find(value => !value) !== undefined)
+      } else {
+        var requiredData = [...data];
+        requiredData.pop();
+        console.log(requiredData);
+        setOkBtnDisable(requiredData.find(value => !value) !== undefined)
+      }
     }, [data])
 
 
     const onValueChange = useCallback((changeKey, newValue) => {
+        console.log("change key", changeKey, ", new value: ", newValue)
         setData((prevData)=>fields.map(({title},i) => title===changeKey? newValue:prevData[i]))
         
       }, [fields])
@@ -83,14 +95,14 @@ const ModalAdd = ({onChange, table, fields, button}) => {
         layout='vertical'
         > 
         
-        {fields.map(({title,inputRender},i) =>
-                <Form.Item label={title} name={title}
+        {fields.map(({title,inputRender,required},i) =>
+                <Form.Item label={title}
                   rules={[
                     {
-                      required: true,
-                      message: 'Please enter the '+title,
+                      required: required,
+                      message: `Please Input ${title}!`,
                     },
-                  ]}
+                  ]} 
                   key={title} className='items-from-modal-add'>
                {inputRender?
                inputRender(data[i],(newValue)=>onValueChange(title,newValue)):

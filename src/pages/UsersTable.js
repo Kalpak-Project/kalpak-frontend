@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import {Table, Select , Spin} from 'antd';
+import { Table, Select, Spin } from 'antd';
 import ModalAdd from '../components/ModalAdd';
 import { withUser } from '../components/userContext';
 import { Navigate  } from 'react-router-dom';
-const {Option}=Select;
+const { Option } = Select;
 
 const UsersTable = ({user}) => {
 
@@ -20,7 +20,7 @@ const UsersTable = ({user}) => {
         ).catch(err => {
             console.log(err)
         })
-    }, [],)
+    }, [])
 
 
     useEffect(() => {
@@ -33,21 +33,25 @@ const UsersTable = ({user}) => {
             title: 'Family Name',
             dataIndex: 'Family Name',
             width: '20%',
+            required: true
         },
         {
             title: 'Private Name',
             dataIndex: 'Private Name',
             width: '20%',
+            required: true
         },
         {
             title: 'user_name',
             dataIndex: 'user_name',
             width: '20%',
+            required: true
         },
         {
             title: 'Personal ID',
             dataIndex: 'Personal ID',
             width: '20%',
+            required: true
         },
         {
             title: 'Employer',
@@ -55,21 +59,19 @@ const UsersTable = ({user}) => {
             width: '20%',
             render: (text, record) => <User value={text}/>,
             inputRender: (value, onChange)=><UserSelect key={1} value={value} onChange={onChange}/>,
-        }
+            required: true
+        }]
 
-    ]
-
-    const cols = columns.map(elem => ({title:elem.title, inputRender:elem.inputRender}))
+    const cols = columns.map(elem => ({title:elem.title, inputRender:elem.inputRender, required: elem.required}))
 
     return (
         user === null ? <Navigate to='/login' /> :
         !user['isAdmin'] ? <Navigate to='/' /> : 
         <div>
             <ModalAdd onChange={resetUsers} table={"users"} fields={cols} button='Add New User' />
-            <Table loading={loading} dataSource={users} columns={columns} pagination={{ pageSize: 40 }} scroll={{ y: 320 }} />
+            <Table loading={loading} dataSource={users} columns={columns} pagination={{ pageSize: 40 }} scroll={{ y: 275 }} />
         </div>
-    )
-}
+    )}
 
 export const User = ({value})=> {
     const [data,setData]=useState();
@@ -88,10 +90,12 @@ export const UserSelect = ({value,onChange})=> {
         axios.get("/api/users").then((response)=>{
         setData(response.data.users)            
         }).catch();
-    },[]);
+    }, []);
+
     return <Select value={value} onChange={onChange}> 
         {data.map((option,i)=><Option key={i} value={option.key}><User value={option.key}/></Option>)}
     </Select>
 }
+
 export default withUser(UsersTable)
 

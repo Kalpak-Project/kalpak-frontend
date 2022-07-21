@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Button, Row, Col, List, Typography, Timeline, Popover, Card } from 'antd';
 import { withUser } from '../components/userContext';
@@ -25,9 +25,7 @@ const Home = withUser(({user}) => {
             ).catch(err => {
                 console.log(err)
             })
-        },
-        [],
-    )
+        }, [])
 
     const resetEmployeeList = useCallback(
         () => {
@@ -40,8 +38,17 @@ const Home = withUser(({user}) => {
             ).catch(err => {
                 console.log(err)
             })
-        }, [],
-    )
+        }, [])
+
+    const sendForCalculation = useCallback(
+        () => {
+            axios.post('/api/updateRolesOrder',
+            {'userUpdate': `${user.id}`, 'orderedList': rolesList}).then(
+                res => {
+                    console.log('orederedList',  rolesList)
+                    // need to print to user that the order updated. 
+            }).catch(err => {console.log(err)})
+        }, [rolesList])
 
     const sendForCalculation = useCallback(
         () => {
@@ -59,14 +66,13 @@ const Home = withUser(({user}) => {
                 axios.get(`/api/optional_roles/${user.id}`).then(
                     res => {
                         setRolesList({rolesList: res.data.dataRoles, loadingRoles: false})
+                        console.log("roles: ")
                         console.log(rolesList)
                     }
                 ).catch(err => {
                     console.log(err)
                 })
-        },
-        [],
-    )
+        }, [])
 
     const resetJobEndDate = useCallback(
         () => {
@@ -81,9 +87,73 @@ const Home = withUser(({user}) => {
             ).catch(err => {
                 console.log(err)
             })
-        },
-        [],
-    )
+        }, [])
+
+    const resetRolesHistory = useCallback(
+        () => {
+            axios.get(`/api/rolesHistory/${user.id}`).then(
+                res => {
+                    console.log(res.data.rolesHistory)
+                    setRolesHistory(res.data.rolesHistory)
+                }
+            )
+        }, [])
+
+    const getFileOfRole = (manningId => {
+            axios.get(`/api/getFileOfRole/${manningId}`).then(
+                res => {
+                    console.log(res.data)
+                }
+            ).catch(
+                err => console.log(manningId)
+            )
+        })
+
+    const changeRolesOrder = ((changedIndex, action) => {
+        var orderedList = Array.from(rolesList);
+        var currentRole = orderedList[changedIndex];
+        var otherRole;
+        if (action === 'up'){
+            otherRole = orderedList[changedIndex - 1]
+            currentRole['index'] = changedIndex - 1
+            otherRole['index'] = changedIndex
+        } else {
+            otherRole = orderedList[changedIndex + 1]
+            currentRole['index'] = changedIndex + 1
+            otherRole['index'] = changedIndex
+        }
+        setRolesList({rolesList: orderedList, loadingRoles: false})
+    })
+
+    const convertDateFormat = ((dateStr)=>{
+        var date = new Date(dateStr);
+        var dd = String(date.getDate()).padStart(2, '0');
+        var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = date.getFullYear();
+        date = dd + '/' + mm + '/' + yyyy;
+        console.log(date)
+        return date
+    })
+
+    const rolesHistoryList = () =>
+        {
+            const rolesList = structuredClone(rolesHistory)
+            for (const role of rolesList) {
+                delete role['_id'];
+                delete role['Role ID'];
+                delete role['User ID'];
+                delete role['Title'];
+                delete role['file_path']
+            }
+            return rolesList
+        }
+
+    const rolesHistoryContent = rolesHistoryList().map(role=>
+        <div>
+            {Object.keys(role).map((key)=>
+            <p><b>{key  + ': '}</b>{role[key]}</p>)}
+        </div>)
+
 
     const resetRolesHistory = useCallback(
         () => {
@@ -153,23 +223,23 @@ const Home = withUser(({user}) => {
 
     useEffect(() => {
        resetSmile()
-    }, [])
+        }, [])
 
     useEffect(() => {
         resetEmployeeList()
-    }, [])
+        }, [])
 
     useEffect(() => {
         resetRolesList()
-     }, [])
+        }, [])
 
      useEffect(() => {
         resetJobEndDate()
-     }, [])
+        }, [])
 
      useEffect(() => {
         resetRolesHistory()
-     }, [])
+        }, [])
 
     return (
         user === null ? <Navigate to='/login' /> : 
@@ -212,6 +282,7 @@ const Home = withUser(({user}) => {
                         loading={loadingRoles}
                         style={{overflow: "auto", height: "280px", marginTop: '1rem'}}
                         dataSource={rolesList.sort((a, b) => a['index'] > b['index'] ? 1:-1)}
+                        // TODO fix some problem of the indexes in the list.
                         renderItem={(item) => (
                             <List.Item>
                             <Title level={4}>{item["Title"]}</Title>
@@ -245,14 +316,10 @@ const Home = withUser(({user}) => {
                             } trigger={'hover'}
                                 placement="left">
                             O
-                        </Popover>
-                    
-                   
+                        </Popover>                 
                     }
                     color="green">{Title}
                 </Timeline.Item>)}
-                    
-                    
                 </Timeline>
             </Col>
             </Row>
