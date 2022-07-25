@@ -1,9 +1,9 @@
 # kalpak-frontend
 
 required libraries:
-react
-antd
-axios
+react.
+antd.
+axios.
 
 We may have forgotten some additional libraries.
 If there are additional libraries that are missing - when you try to run,
